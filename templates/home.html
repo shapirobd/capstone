@@ -42,7 +42,7 @@
 				</div>
 			</div>
 		</div>
-		{# POWER FORM #} {{power_form.hidden_tag()}}
+		{# {{power_form.hidden_tag()}}
 		<div class="row justify-content-center">
 			<div class="col">
 				<button
@@ -81,7 +81,7 @@
 			</div>
 		</div>
 
-		{# TOUGHNESS FORM #} {{toughness_form.hidden_tag()}}
+		{{toughness_form.hidden_tag()}}
 		<div class="row justify-content-center">
 			<div class="col">
 				<button
@@ -118,7 +118,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> #}
 		{# SET FORM #} {{set_form.hidden_tag()}}
 		<div class="row justify-content-center">
 			<div class="col">
@@ -323,7 +323,7 @@
 				</div>
 				{% endfor %}
 			</div>
-			{# <nav aria-label="Page navigation example">
+			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
 					{% if page == 1 %}
 					<li class="page-item disabled">
@@ -409,7 +409,7 @@
 					</li>
 					{% endif %}
 				</ul>
-			</nav> #}
+			</nav>
 		</div>
 	</div>
 	{% endblock %}

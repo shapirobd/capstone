@@ -9,8 +9,8 @@ import flask_paginate
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, PowerForm, ToughnessForm, DeckForm, EditUserForm
+from models import db, connect_db, User, Card, Bookmark, Deck, CardDeck
+from forms import TypeForm, DeckForm
 
 decks_blueprint = Blueprint('decks_blueprint', __name__, static_folder='static',
                             template_folder='templates')
@@ -36,9 +36,9 @@ def show_deck(deck_id):
     type_form = TypeForm()
     type_form.card_type.choices = TYPES
 
-    power_form = PowerForm()
-    toughness_form = ToughnessForm()
-    return render_template('deck.html', deck=deck, type_form=type_form, power_form=power_form, toughness_form=toughness_form, bookmarked_card_ids=bookmarked_card_ids)
+    # power_form = PowerForm()
+    # toughness_form = ToughnessForm()
+    return render_template('deck.html', deck=deck, type_form=type_form, bookmarked_card_ids=bookmarked_card_ids)
 
 
 @decks_blueprint.route('/decks/<int:deck_id>/delete', methods=['POST'])

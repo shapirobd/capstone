@@ -10,7 +10,7 @@ from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, PowerForm, ToughnessForm, DeckForm, EditUserForm
+from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm
 
 friends_blueprint = Blueprint('friends_blueprint', __name__, static_folder='static',
                               template_folder='templates')

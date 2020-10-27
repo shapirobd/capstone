@@ -50,14 +50,14 @@ class SetForm(FlaskForm):
     set_name = RadioField('Set Name', option_widget=CheckboxInput())
 
 
-class PowerForm(FlaskForm):
-    power_conditionals = RadioField('Power', option_widget=CheckboxInput(),
-                                    choices=["Less than", "Equal to", "Greater than"])
-    power = IntegerField('Power', default=0)
+# class PowerForm(FlaskForm):
+#     power_conditionals = RadioField('Power', option_widget=CheckboxInput(),
+#                                     choices=["Less than", "Equal to", "Greater than"])
+#     power = IntegerField('Power', default=0)
 
 
-class ToughnessForm(FlaskForm):
+# class ToughnessForm(FlaskForm):
 
-    toughness_conditionals = RadioField('Toughness', option_widget=CheckboxInput(),
-                                        choices=["Less than", "Equal to", "Greater than"])
-    toughness = IntegerField('Toughness', default=0)
+#     toughness_conditionals = RadioField('Toughness', option_widget=CheckboxInput(),
+#                                         choices=["Less than", "Equal to", "Greater than"])
+#     toughness = IntegerField('Toughness', default=0)

@@ -10,7 +10,7 @@ from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, PowerForm, ToughnessForm, DeckForm, EditUserForm, ColorForm, RarityForm, SetForm
+from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm, ColorForm, RarityForm, SetForm
 
 home_blueprint = Blueprint('home_blueprint', __name__, static_folder='static',
                            template_folder='templates')
@@ -36,10 +36,10 @@ def generate_forms():
     set_form = SetForm()
     set_form.set_name.choices = SETS
 
-    power_form = PowerForm()
-    toughness_form = ToughnessForm()
+    # power_form = PowerForm()
+    # toughness_form = ToughnessForm()
 
-    return [type_form, color_form, rarity_form, set_form, power_form, toughness_form]
+    return [type_form, color_form, rarity_form, set_form]
 
 
 @ home_blueprint.route('/')
@@ -56,14 +56,12 @@ def welcome():
 
 @ home_blueprint.route('/home')
 def show_homepage():
-    # base_url = '/home?'
-    # page = determine_page(request.args)
-    # index_range = determine_index_range(page)
+    base_url = '/home?'
+    page = determine_page(request.args)
+    index_range = determine_index_range(page)
+    cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
 
-    # cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
-    cards = Card.query.all()
-
-    return render_homepage(cards)
+    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
 @ home_blueprint.route('/home/search')
@@ -107,7 +105,7 @@ def render_card_search(term, category, req_args):
     cards = [card for card in all_cards if (all_cards.index(
         card) + 1) in index_range]
 
-    return render_homepage(base_url, page, index_range, cards)
+    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
 @home_blueprint.route('/home/filter')
@@ -126,12 +124,12 @@ def filter_cards():
     filtered_cards = generate_filtered_cards(
         types, sets, colors, rarities, index_range)
 
-    return render_homepage(base_url, page, index_range, filtered_cards)
+    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=filtered_cards)
 
 # ADD base_url, page, index_range
 
 
-def render_homepage(cards):
+def render_homepage(cards, base_url, page, index_range):
     decks = Deck.query.all()
 
     bookmarks = Bookmark.query.all()
@@ -143,12 +141,10 @@ def render_homepage(cards):
     color_form = forms[1]
     rarity_form = forms[2]
     set_form = forms[3]
-    power_form = forms[4]
-    toughness_form = forms[5]
+    # power_form = forms[4]
+    # toughness_form = forms[5]
 
-    return render_template('home.html', cards=cards, decks=decks, type_form=type_form,
-                           power_form=power_form, toughness_form=toughness_form, color_form=color_form, rarity_form=rarity_form,
-                           set_form=set_form, bookmarked_card_ids=bookmarked_card_ids)
+    return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, type_form=type_form, color_form=color_form, rarity_form=rarity_form, set_form=set_form, bookmarked_card_ids=bookmarked_card_ids)
 
 
 def generate_filter_terms(category, default_terms, req_args):
