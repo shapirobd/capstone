@@ -1,0 +1,62 @@
+body {
+	height: 100vh;
+	background-color: black;
+}
+
+#background-image {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 88%;
+	opacity: 8%;
+	background-image: url("../images/mtg_logo.png");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.scroll {
+	max-height: 88vh;
+	overflow-y: auto;
+}
+
+.mtg-card {
+	border-radius: 0.96em;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#filter-panel {
+	height: 90vh;
+}
+
+#main-home {
+	height: 87vh;
+}
+
+.nav-img {
+	height: 25px;
+}
+
+.filter-dropdown {
+	max-height: 400px;
+}
+
+/* input[type="checkbox"] {
+	display: none;
+}
+
+input[type="checkbox"] + label {
+	background: url("images/checkbox-off.png") no-repeat;
+	width: 20px;
+	height: 20px;
+}
+
+input[type="checkbox"]:checked + label {
+	background: url("images/checkbox-on.png");
+	width: 20px;
+	height: 20px;
+} */
