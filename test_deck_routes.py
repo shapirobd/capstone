@@ -8,7 +8,8 @@ from models import db, User, Card, Deck, bcrypt
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
 
-os.environ['DATABASE_URL'] = "postgresql:///mtg_db_test"
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgres:///mtg_db_test'))
 
 
 class DeckRoutesTestCase(TestCase):
@@ -31,8 +32,8 @@ class DeckRoutesTestCase(TestCase):
         db.session.commit()
         print(self.deck1)
 
-    def tearDown(self):
-        db.session.rollback()
+    # def tearDown(self):
+    #     db.session.rollback()
 
     def test_view_decks(self):
         with self.client as c:
@@ -52,7 +53,7 @@ class DeckRoutesTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
 
-            resp = c.get(f'/decks/{self.deck1.id}')
+            resp = c.get(f'/decks/1')
 
             self.assertEqual(resp.status_code, 200)
     # def test_delete_deck(self):
@@ -69,7 +70,7 @@ class DeckRoutesTestCase(TestCase):
             db.session.add(new_card)
             db.session.commit()
             print(card)
-            resp = c.post(f'/cards/{new_card.id}/decks/{self.deck1.id}',
+            resp = c.post(f'/cards/{new_card.id}/decks/1',
                           follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)

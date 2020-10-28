@@ -84,15 +84,15 @@ class Card(db.Model):
     __tablename__ = 'cards'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
+    name = db.Column(db.Text, nullable=False, index=True)
     image_url = db.Column(db.Text)
     text = db.Column(db.Text)
-    card_type = db.Column(db.Text, nullable=False)
+    card_type = db.Column(db.Text, nullable=False, index=True)
     power = db.Column(db.Integer or db.String)
     toughness = db.Column(db.Integer)
-    colors = db.Column(db.Text, nullable=False)
-    rarity = db.Column(db.Text, nullable=False)
-    set_name = db.Column(db.Text, nullable=False)
+    colors = db.Column(db.Text, nullable=False, index=True)
+    rarity = db.Column(db.Text, nullable=False, index=True)
+    set_name = db.Column(db.Text, nullable=False, index=True)
     users = db.relationship('User', secondary='bookmarks', backref='cards')
     decks = db.relationship('Deck', secondary='cards_decks', backref='cards')
 

@@ -7,7 +7,8 @@ from models import db, User, Card, Bookmark, Deck, bcrypt
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
 
-os.environ['DATABASE_URL'] = "postgresql:///mtg_db_test"
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgres:///mtg_db_test'))
 
 
 class BookmarkModelTestCase(TestCase):
@@ -16,7 +17,6 @@ class BookmarkModelTestCase(TestCase):
     def setUp(self):
         """Create test client, add sample data."""
 
-        db.drop_all()
         db.create_all()
 
         self.client = app.test_client()

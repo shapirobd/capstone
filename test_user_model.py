@@ -6,7 +6,8 @@ from models import db, User, Bookmark, bcrypt
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
 
-os.environ['DATABASE_URL'] = "postgresql:///mtg_db_test"
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgres:///mtg_db_test'))
 
 
 def test(username, password, email, image_url):

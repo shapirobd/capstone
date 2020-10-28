@@ -114,7 +114,7 @@ def filter_cards():
     types = generate_filter_terms('card_type', TYPES, request.args)
     sets = generate_filter_terms('set_name', SETS, request.args)
     colors = generate_filter_terms('colors', COLORS, request.args)
-    rarities = generate_filter_terms('card_type', RARITIES, request.args)
+    rarities = generate_filter_terms('rarities', RARITIES, request.args)
 
     base_url = f'/home/filter?card_type={types}&sets={sets}&colors={colors}&rarities={rarities}&'
 
@@ -149,7 +149,7 @@ def render_homepage(cards, base_url, page, index_range):
 
 def generate_filter_terms(category, default_terms, req_args):
     terms = default_terms
-    if category in request.args and len(req_args[category]) > 0:
+    if category in req_args and len(req_args[category]) > 0:
         terms = req_args[category].split(',')
     return terms
 

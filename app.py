@@ -44,6 +44,3 @@ def add_user_to_g():
         g.user = User.query.get(session[CURR_USER_KEY])
     else:
         g.user = None
-
-
-print('***********')
