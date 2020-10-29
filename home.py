@@ -37,9 +37,6 @@ def generate_forms():
     set_form = SetForm()
     set_form.set_name.choices = SETS
 
-    # power_form = PowerForm()
-    # toughness_form = ToughnessForm()
-
     return [type_form, color_form, rarity_form, set_form]
 
 
@@ -72,23 +69,26 @@ def search():
     category = request.args['category']
 
     if category == 'card':
-        return render_card_search(term, category, request.args)
+        return search_cards(term, category, request.args)
+    else:
+        return handle_category(category, term)
 
-    elif category == 'deck':
+
+def handle_category(category, term):
+    keyword = category
+    if category == 'deck':
         decks = Deck.query.filter(
             (Deck.deck_name.ilike(f'%{term}%')) | (
                 Deck.deck_type.ilike(f'%{term}%'))).all()
         if len(decks) == 0:
             flash('No results found.', 'danger')
         return render_template('decks.html', decks=decks)
-
     elif category == 'friend':
         friends = [friend for friend in g.user.friends if term.casefold()
                    in friend.username.casefold()]
         if len(friends) == 0:
             flash('No results found.', 'danger')
         return render_template('friends.html', friends=friends)
-
     elif category == 'user':
         users = [user for user in User.query.filter(
             User.username.ilike(f'%{term}%')).all()]
@@ -96,11 +96,8 @@ def search():
             flash('No results found.', 'danger')
         return render_template('users.html', users=users)
 
-    else:
-        return
 
-
-def render_card_search(term, category, req_args):
+def search_cards(term, category, req_args):
 
     base_url = f'/home/search?term={term}&category={category}&'
 
@@ -134,8 +131,6 @@ def filter_cards():
         types, sets, colors, rarities, index_range)
 
     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=filtered_cards)
-
-# ADD base_url, page, index_range
 
 
 def render_homepage(cards, base_url, page, index_range):
