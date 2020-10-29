@@ -10,7 +10,7 @@ from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm
+from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm, NewPostForm
 
 users_blueprint = Blueprint('users_blueprint', __name__, static_folder='static',
                             template_folder='templates')
@@ -89,10 +89,20 @@ def check_confirmed_pwd(pwd, confirmed_pwd):
         return redirect('/register')
 
 
-@users_blueprint.route('/users/<string:username>')
+@users_blueprint.route('/users/<string:username>', methods=['GET', 'POST'])
 def user_profile(username):
-    user = User.query.get(username)
-    return render_template('user.html', user=user)
+    if g.user:
+        if g.user.username == username:
+            form = NewPostForm()
+            if form.validate_on_submit():
+                post = Post(username=username, title=form.title.data,
+                            content=form.content.data)
+                db.session.add(post)
+                db.session.commit()
+                return redirect(f'/users/{username}')
+        user = User.query.get(username)
+        return render_template('user.html', user=user, form=form)
+    return redirect('/login')
 
 
 @users_blueprint.route('/users/<string:username>/edit', methods=['GET', 'POST'])

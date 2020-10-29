@@ -172,6 +172,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.ForeignKey('users.username'))
+    title = db.Column(db.Text, nullable=False)
     content = db.Column(db.Text, nullable=False)
     date_time = db.Column(db.DateTime, nullable=False,
                           default=datetime.utcnow)

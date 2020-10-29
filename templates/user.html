@@ -26,15 +26,40 @@
 			{% endif %}
 		</div>
 		<div class="col-8">
-			{% for post in user.posts %}
-			<div class="jumbotron border">
-				<div class="row">
-					<h2>{{post.title}}</h2>
-					<h4>{{post.date_time}}</h4>
-				</div>
-				<hr />
-				<p>{{post.content}}</p>
+			{% if g.user.username == user.username %}
+			<div class="jumbotron pb-2 pt-3">
+				<h1 class="display-5 text-dark text-center">Create Post</h1>
+				<form method="POST" action="" class="my-3">
+					{{form.hidden_tag()}} {% for field in form if field.widget.input_type
+					!= 'hidden' %}
+					<p>
+						{{field.label(class_='text-dark')}} {{field(class_="form-control")}}
+						{% for error in field.errors %}
+						<span class="form-text text-danger">{{error}}</span>
+						{% endfor %}
+					</p>
+					{% endfor %}
+					<div class="row justify-content-center">
+						<button class="btn btn-success" type="submit">Post</button>
+					</div>
+					{% for category, message in get_flashed_messages(with_categories=True)
+					%}
+					<p class="text-{{category}} text-right">{{ message }}</p>
+					{% endfor %}
+				</form>
 			</div>
+			{% endif %} {% for post in user.posts %}
+
+			<div class="jumbotron bg-dark text-white pt-3 pb-1">
+				<h1 class="display-5">{{post.title}}</h1>
+				<p class="lead">{{post.username}}</p>
+				<hr class="my-2" />
+				<p>{{post.content}}</p>
+				<p class="text-secondary font-light">
+					<i><small> {{post.date_time}}</small></i>
+				</p>
+			</div>
+
 			{% endfor %}
 		</div>
 	</div>

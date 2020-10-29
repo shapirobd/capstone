@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, IntegerField, RadioField, SelectField, FileField
+from wtforms import StringField, PasswordField, IntegerField, RadioField, SelectField, FileField, TextAreaField
 from wtforms.validators import InputRequired, Length
 from wtforms.widgets import CheckboxInput, ListWidget
 
@@ -49,6 +49,12 @@ class RarityForm(FlaskForm):
 class SetForm(FlaskForm):
     set_name = RadioField('Set Name', option_widget=CheckboxInput())
 
+
+class NewPostForm(FlaskForm):
+    title = StringField('Title', validators=[
+        InputRequired()])
+    content = TextAreaField('Content', validators=[
+        InputRequired()])
 
 # class PowerForm(FlaskForm):
 #     power_conditionals = RadioField('Power', option_widget=CheckboxInput(),
