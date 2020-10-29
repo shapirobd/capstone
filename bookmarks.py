@@ -17,7 +17,8 @@ bookmarks_blueprint = Blueprint('bookmarks_blueprint', __name__, static_folder='
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
+TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
+         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
 
 
 @bookmarks_blueprint.route('/cards/<int:card_id>/bookmark', methods=['GET', 'POST'])

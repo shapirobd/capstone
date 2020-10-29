@@ -17,7 +17,8 @@ decks_blueprint = Blueprint('decks_blueprint', __name__, static_folder='static',
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
+TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
+         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
 
 
 @decks_blueprint.route('/decks', methods=['GET', 'POST'])

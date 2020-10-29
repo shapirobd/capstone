@@ -5,7 +5,6 @@ import json
 import mtgsdk
 import flask_paginate
 
-# from mtgsdk import Type
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -17,8 +16,10 @@ home_blueprint = Blueprint('home_blueprint', __name__, static_folder='static',
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
-SETS = [mtg_set.name for mtg_set in mtgsdk.Set.all()]
+TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
+         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
+# SETS = [mtg_set.name for mtg_set in mtgsdk.Set.all()]
+SETS = ['Tenth Edition']
 RARITIES = ['Common', 'Uncommon', 'Rare', 'Mythic Rare']
 COLORS = ['White', 'Blue', 'Black', 'Green', 'Red']
 

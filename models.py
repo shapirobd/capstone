@@ -85,7 +85,8 @@ class Card(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.Text, nullable=False, index=True)
-    image_url = db.Column(db.Text)
+    image_url = db.Column(
+        db.Text, default='~/Desktop/Software_Engineering/Capstone/static/images/mtg_default.png')
     text = db.Column(db.Text)
     card_type = db.Column(db.Text, nullable=False, index=True)
     power = db.Column(db.Integer or db.String)
@@ -103,7 +104,8 @@ class Card(db.Model):
 
             colors = ' '.join(card['colors'])
 
-            image_url = card.get('imageUrl', 'static/images/mtg_default.jpg')
+            image_url = card.get(
+                'imageUrl', 'https://fiverr-res.cloudinary.com/t_main1,q_auto,f_auto/gigs/170260103/original/f6f8068ef76f3877753a595e9b0041ca4d5f26c0.jpg')
             text = card.get('text')
 
             power = card.get('power')

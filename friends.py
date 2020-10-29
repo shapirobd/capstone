@@ -17,8 +17,6 @@ friends_blueprint = Blueprint('friends_blueprint', __name__, static_folder='stat
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
-
 
 @friends_blueprint.route('/friends')
 def show_friends():

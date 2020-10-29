@@ -34,7 +34,8 @@ toolbar = DebugToolbarExtension(app)
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
+TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
+         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
 
 
 @app.before_request

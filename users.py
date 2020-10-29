@@ -17,8 +17,6 @@ users_blueprint = Blueprint('users_blueprint', __name__, static_folder='static',
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = mtgsdk.Type.all()
-
 
 def do_logout():
     """Logout user."""
