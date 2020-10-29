@@ -72,25 +72,32 @@ def search():
     category = request.args['category']
 
     if category == 'card':
-
         return render_card_search(term, category, request.args)
 
     elif category == 'deck':
         decks = Deck.query.filter(
             (Deck.deck_name.ilike(f'%{term}%')) | (
                 Deck.deck_type.ilike(f'%{term}%'))).all()
+        if len(decks) == 0:
+            flash('No results found.', 'danger')
         return render_template('decks.html', decks=decks)
 
     elif category == 'friend':
         friends = [friend for friend in g.user.friends if term.casefold()
                    in friend.username.casefold()]
-        print(g.user.friends)
+        if len(friends) == 0:
+            flash('No results found.', 'danger')
         return render_template('friends.html', friends=friends)
 
     elif category == 'user':
         users = [user for user in User.query.filter(
             User.username.ilike(f'%{term}%')).all()]
+        if len(users) == 0:
+            flash('No results found.', 'danger')
         return render_template('users.html', users=users)
+
+    else:
+        return
 
 
 def render_card_search(term, category, req_args):
@@ -105,7 +112,8 @@ def render_card_search(term, category, req_args):
 
     cards = [card for card in all_cards if (all_cards.index(
         card) + 1) in index_range]
-
+    if len(cards) == 0:
+        flash('No results found.', 'danger')
     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
@@ -144,7 +152,8 @@ def render_homepage(cards, base_url, page, index_range):
     set_form = forms[3]
     # power_form = forms[4]
     # toughness_form = forms[5]
-
+    if len(cards) == 0:
+        flash('No results found.', 'danger')
     return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, type_form=type_form, color_form=color_form, rarity_form=rarity_form, set_form=set_form, bookmarked_card_ids=bookmarked_card_ids)
 
 

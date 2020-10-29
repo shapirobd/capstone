@@ -17,6 +17,8 @@ friends_blueprint = Blueprint('friends_blueprint', __name__, static_folder='stat
 
 CURR_USER_KEY = 'curr-user'
 
+TYPES = mtgsdk.Type.all()
+
 
 @friends_blueprint.route('/friends')
 def show_friends():
@@ -31,6 +33,7 @@ def add_friend(friend_username):
     if g.user:
         friend = User.query.get(friend_username)
         g.user.friends.append(friend)
+        friend.friends.append(g.user)
         db.session.commit()
         return redirect('/friends')
     return redirect('/login')
@@ -41,6 +44,7 @@ def remove_friend(friend_username):
     if g.user:
         friend = User.query.get(friend_username)
         g.user.friends.remove(friend)
+        friend.friends.remove(g.user)
         db.session.commit()
         return redirect('/friends')
     return redirect('/login')

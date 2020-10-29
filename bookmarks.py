@@ -10,7 +10,7 @@ from app import g
 from flask import Flask, session, Blueprint, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm
+from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm, SetForm, ColorForm, RarityForm
 
 bookmarks_blueprint = Blueprint('bookmarks_blueprint', __name__, static_folder='static',
                                 template_folder='templates')
@@ -19,6 +19,9 @@ CURR_USER_KEY = 'curr-user'
 
 TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
          'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
+SETS = ['Tenth Edition']
+RARITIES = ['Common', 'Uncommon', 'Rare', 'Mythic Rare']
+COLORS = ['White', 'Blue', 'Black', 'Green', 'Red']
 
 
 @bookmarks_blueprint.route('/cards/<int:card_id>/bookmark', methods=['GET', 'POST'])
@@ -53,9 +56,12 @@ def show_bookmarked_cards():
             bookmarked_card.id for bookmarked_card in bookmarked_cards]
         type_form = TypeForm()
         type_form.card_type.choices = TYPES
+        set_form = SetForm()
+        set_form.set_name.choices = SETS
+        rarity_form = SetForm()
+        rarity_form.set_name.choices = RARITIES
+        color_form = SetForm()
+        color_form.set_name.choices = COLORS
 
-        power_form = PowerForm()
-        toughness_form = ToughnessForm()
-
-        return render_template('bookmarks.html', bookmarked_cards=bookmarked_cards, decks=decks, type_form=type_form, power_form=power_form, toughness_form=toughness_form, bookmarked_card_ids=bookmarked_card_ids)
+        return render_template('bookmarks.html', bookmarked_cards=bookmarked_cards, decks=decks, set_form=set_form, type_form=type_form, color_form=color_form, rarity_form=rarity_form, bookmarked_card_ids=bookmarked_card_ids)
     return redirect('/login')

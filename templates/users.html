@@ -2,6 +2,11 @@
 
 <div class="container my-5">
 	<div class="row justify-content-center">
+		{% for category, message in get_flashed_messages(with_categories=True) %}
+		<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
+		{% endfor %}
+	</div>
+	<div class="row">
 		<div class="col-6 text-white">
 			{% for user in users %}
 			<div class="col-6 text-white">
