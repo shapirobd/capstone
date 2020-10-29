@@ -76,7 +76,7 @@ def search():
 
 def handle_category(category, term):
     keyword = category
-    if category == 'deck':
+    if category == 'decks':
         decks = Deck.query.filter(
             (Deck.deck_name.ilike(f'%{term}%')) | (
                 Deck.deck_type.ilike(f'%{term}%'))).all()
@@ -114,23 +114,23 @@ def search_cards(term, category, req_args):
     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
-@home_blueprint.route('/home/filter')
-def filter_cards():
+# @home_blueprint.route('/home/filter')
+# def filter_cards():
 
-    types = generate_filter_terms('card_type', TYPES, request.args)
-    sets = generate_filter_terms('set_name', SETS, request.args)
-    colors = generate_filter_terms('colors', COLORS, request.args)
-    rarities = generate_filter_terms('rarities', RARITIES, request.args)
+#     types = generate_filter_terms('card_type', TYPES, request.args)
+#     sets = generate_filter_terms('set_name', SETS, request.args)
+#     colors = generate_filter_terms('colors', COLORS, request.args)
+#     rarities = generate_filter_terms('rarities', RARITIES, request.args)
 
-    base_url = f'/home/filter?card_type={types}&sets={sets}&colors={colors}&rarities={rarities}&'
+#     base_url = f'/home/filter?card_type={types}&sets={sets}&colors={colors}&rarities={rarities}&'
 
-    page = determine_page(request.args)
-    index_range = determine_index_range(page)
+#     page = determine_page(request.args)
+#     index_range = determine_index_range(page)
 
-    filtered_cards = generate_filtered_cards(
-        types, sets, colors, rarities, index_range)
+#     filtered_cards = generate_filtered_cards(
+#         types, sets, colors, rarities, index_range)
 
-    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=filtered_cards)
+#     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=filtered_cards)
 
 
 def render_homepage(cards, base_url, page, index_range):
@@ -152,11 +152,11 @@ def render_homepage(cards, base_url, page, index_range):
     return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, type_form=type_form, color_form=color_form, rarity_form=rarity_form, set_form=set_form, bookmarked_card_ids=bookmarked_card_ids)
 
 
-def generate_filter_terms(category, default_terms, req_args):
-    terms = default_terms
-    if category in req_args and len(req_args[category]) > 0:
-        terms = req_args[category].split(',')
-    return terms
+# def generate_filter_terms(category, default_terms, req_args):
+#     terms = default_terms
+#     if category in req_args and len(req_args[category]) > 0:
+#         terms = req_args[category].split(',')
+#     return terms
 
 
 def determine_page(req_args):
@@ -173,8 +173,8 @@ def determine_index_range(page):
     return index_range
 
 
-def generate_filtered_cards(types, sets, colors, rarities, index_range):
-    filtered_cards = Card.query.filter(Card.card_type.in_(types) & Card.set_name.in_(
-        sets) & Card.colors.in_(colors) & Card.rarity.in_(rarities)).all()
-    return [card for card in filtered_cards if (
-        filtered_cards.index(card) + 1) in index_range]
+# def generate_filtered_cards(types, sets, colors, rarities, index_range):
+#     filtered_cards = Card.query.filter(Card.card_type.in_(types) & Card.set_name.in_(
+#         sets) & Card.colors.in_(colors) & Card.rarity.in_(rarities)).all()
+#     return [card for card in filtered_cards if (
+#         filtered_cards.index(card) + 1) in index_range]

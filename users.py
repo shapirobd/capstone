@@ -92,8 +92,8 @@ def check_confirmed_pwd(pwd, confirmed_pwd):
 @users_blueprint.route('/users/<string:username>', methods=['GET', 'POST'])
 def user_profile(username):
     if g.user:
+        form = NewPostForm()
         if g.user.username == username:
-            form = NewPostForm()
             if form.validate_on_submit():
                 post = Post(username=username, title=form.title.data,
                             content=form.content.data)
