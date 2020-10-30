@@ -16,6 +16,9 @@ class DeckModelTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
+        # Deck.query.delete()
+        # Bookmark.query.delete()
+        User.query.delete()
 
         db.create_all()
 
@@ -26,13 +29,17 @@ class DeckModelTestCase(TestCase):
 
         self.deck = Deck(deck_name='Sample Deck',
                          deck_type='Standard', username=self.user.username)
+        self.user.decks.append(self.deck)
 
         db.session.commit()
 
     def tearDown(self):
-        db.drop_all()
+        db.session.rollback()
 
     def test_deck_model(self):
+        """Test that basic deck model works"""
+        print(self.deck.deck_name)
         self.assertEqual(self.deck.deck_name, 'Sample Deck')
         self.assertEqual(self.deck.deck_type, 'Standard')
         self.assertEqual(self.deck.username, 'username')
+        self.assertIn(self.deck, self.user.decks)

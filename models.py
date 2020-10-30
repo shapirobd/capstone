@@ -37,8 +37,6 @@ class User(db.Model):
     friends = db.relationship('User', secondary='friendships', primaryjoin=(
         Friendship.user1_username == username), secondaryjoin=(Friendship.user2_username == username))
     posts = db.relationship('Post', backref='user')
-    messages = db.relationship(
-        'Message', backref='user')
 
     @classmethod
     def signup(cls, username, password, email, image_url):
@@ -59,25 +57,6 @@ class User(db.Model):
             if is_auth:
                 return user
         return False
-
-
-class Message(db.Model):
-    __tablename__ = 'messages'
-
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    date_time = db.Column(db.DateTime, nullable=False,
-                          default=datetime.utcnow)
-    username = db.Column(db.Text, db.ForeignKey('users.username'))
-    # conversation = db.relationship('Conversation', backref='messages')
-
-
-# class Conversation(db.Model):
-#     __tablename__ = 'conversations'
-
-#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     message_id = db.Column(db.Integer, db.ForeignKey(
-#         'messages.id'))
 
 
 class Card(db.Model):

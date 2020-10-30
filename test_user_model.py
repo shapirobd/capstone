@@ -34,30 +34,17 @@ class UserModelTestCase(TestCase):
 
         db.session.commit()
 
-    # def tearDown(self):
-    #     db.session.rollback()
+    def tearDown(self):
+        db.session.rollback()
 
     def test_user_model(self):
         """Does basic model work?"""
 
-        u = User(
-            email="test@test.com",
-            username="testuser",
-            password="HASHED_PASSWORD"
-        )
-
-        db.session.add(u)
-        db.session.commit()
-
         # User should have no messages & no followers
-        self.assertEqual(len(u.decks), 0)
-        self.assertEqual(len(u.bookmarked_cards), 0)
-        self.assertEqual(len(u.friends), 0)
-        self.assertEqual(len(u.posts), 0)
-
-    # **********
-    # Does the repr method work as expected?
-    # **********
+        self.assertEqual(len(self.user1.decks), 0)
+        self.assertEqual(len(self.user1.bookmarked_cards), 0)
+        self.assertEqual(len(self.user1.friends), 0)
+        self.assertEqual(len(self.user1.posts), 0)
 
     def test_user_model_repr(self):
         """Does basic model repr work?"""
@@ -66,6 +53,7 @@ class UserModelTestCase(TestCase):
             f'{self.user1}', f'<User {self.user1.username}>')
 
     def test_user_signup(self):
+        """Test that signup class method works"""
         self.assertEqual(self.user1.username, 'username_1')
         self.assertTrue(bcrypt.check_password_hash(
             self.user1.password, 'user1password'))
@@ -74,6 +62,7 @@ class UserModelTestCase(TestCase):
                          "/static/images/default_prof_pic.png")
 
     def test_user_authenticate(self):
+        """Test that authenticate class method works"""
         username = self.user1.username
         good_password = 'user1password'
         bad_password = 'user2password'

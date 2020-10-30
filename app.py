@@ -34,9 +34,6 @@ toolbar = DebugToolbarExtension(app)
 
 CURR_USER_KEY = 'curr-user'
 
-TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
-         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
-
 
 @app.before_request
 def add_user_to_g():

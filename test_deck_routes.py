@@ -36,6 +36,7 @@ class DeckRoutesTestCase(TestCase):
     #     db.session.rollback()
 
     def test_view_decks(self):
+        """Test that route for viewing your own decks works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
@@ -49,6 +50,7 @@ class DeckRoutesTestCase(TestCase):
                 '<h6 class="">Standard</h6>', str(resp.data))
 
     def test_show_deck(self):
+        """Test that route for viewing contents of your own deck works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
@@ -56,10 +58,18 @@ class DeckRoutesTestCase(TestCase):
             resp = c.get(f'/decks/1')
 
             self.assertEqual(resp.status_code, 200)
-    # def test_delete_deck(self):
-    # def test_create_deck(self):
+
+    def test_delete_deck(self):
+        """Test that route for deleting a deck works"""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.user1.username
+            resp = c.post(f'/decks/1/delete', follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
 
     def test_add_to_deck(self):
+        """Test that route for adding a card to your deck works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
@@ -74,5 +84,29 @@ class DeckRoutesTestCase(TestCase):
                           follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
-    # def test_delete_from_deck(self):
-    # def test_show_users_deck(self):
+
+    def test_delete_from_deck(self):
+        """Test that route for removing a card from your deck works"""
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.user1.username
+
+            card = mtgsdk.Card.where(name='Abundance').all()[0]
+            new_card = Card(name=card.name, card_type=card.type,
+                            colors=card.colors, rarity=card.rarity, set_name=card.set_name)
+            db.session.add(new_card)
+            db.session.commit()
+            c.post(f'/cards/1/decks/1',
+                   follow_redirects=True)
+            resp = c.post(f'/cards/1/decks/1/delete', follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_show_users_deck(self):
+        """Test that route for showing a user's deck works"""
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.user1.username
+
+            resp = c.get(f'/users/{self.user1.username}/decks')
+            self.assertEqual(resp.status_code, 200)

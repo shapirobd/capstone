@@ -9,8 +9,8 @@ import flask_paginate
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm, NewPostForm
+from models import db, connect_db, User, Friendship, Card, Bookmark, Deck, CardDeck, Post
+from forms import LoginForm, RegisterForm, DeckForm, EditUserForm, NewPostForm
 
 users_blueprint = Blueprint('users_blueprint', __name__, static_folder='static',
                             template_folder='templates')
@@ -42,7 +42,7 @@ def register():
     if form.validate_on_submit():
         check_confirmed_pwd(form.password.data, form.confirmed_password.data)
         image_url = form.image_url.data or "/static/images/default_prof_pic.png"
-        user = User.signup(username=form.username.data, password=form.password.data,
+        user = User.signup(username=form.username.data, db_session=db.session, password=form.password.data,
                            email=form.email.data, image_url=image_url)
         if user:
             db.session.commit()
@@ -79,11 +79,13 @@ def login():
 
 @users_blueprint.route('/logout')
 def logout():
+    """Logs out a user and redirets them to the login page"""
     do_logout()
     return redirect('/login')
 
 
 def check_confirmed_pwd(pwd, confirmed_pwd):
+    """Checks that the confirmed password matches upon registering"""
     if pwd != confirmed_pwd:
         flash('Passwords must match - please try again.', 'danger')
         return redirect('/register')
@@ -91,10 +93,12 @@ def check_confirmed_pwd(pwd, confirmed_pwd):
 
 @users_blueprint.route('/users/<string:username>', methods=['GET', 'POST'])
 def user_profile(username):
+    """Route for viewing a user's profile"""
     if g.user:
         form = NewPostForm()
         if g.user.username == username:
             if form.validate_on_submit():
+                """If this is a post request, create a new Post instance and put it on your page"""
                 post = Post(username=username, title=form.title.data,
                             content=form.content.data)
                 db.session.add(post)
@@ -107,11 +111,13 @@ def user_profile(username):
 
 @users_blueprint.route('/users/<string:username>/edit', methods=['GET', 'POST'])
 def edit_profile(username):
+    """Route for editting your profile"""
     if g.user:
         form = EditUserForm()
         user = User.query.get(g.user.username)
 
         if form.validate_on_submit():
+            """If this is a post request, update the user's data"""
             user.email = form.email.data
             if form.password.data == form.confirmed_password.data:
                 user.password = form.password.data

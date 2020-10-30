@@ -8,36 +8,13 @@ import flask_paginate
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Friendship, Message, Card, Bookmark, Deck, CardDeck, Post
-from forms import LoginForm, RegisterForm, TypeForm, DeckForm, EditUserForm, ColorForm, RarityForm, SetForm
+from models import db, connect_db, User, Friendship, Card, Bookmark, Deck, CardDeck, Post
+from forms import LoginForm, RegisterForm, DeckForm, EditUserForm
 
 home_blueprint = Blueprint('home_blueprint', __name__, static_folder='static',
                            template_folder='templates')
 
 CURR_USER_KEY = 'curr-user'
-
-TYPES = ['Artifact', 'Conspiracy', 'Creature', 'Enchantment', 'Instant', 'Land',
-         'Phenomenon', 'Plane', 'Planeswalker', 'Scheme', 'Sorcery', 'Tribal', 'Vanguard']
-# SETS = [mtg_set.name for mtg_set in mtgsdk.Set.all()]
-SETS = ['Tenth Edition']
-RARITIES = ['Common', 'Uncommon', 'Rare', 'Mythic Rare']
-COLORS = ['White', 'Blue', 'Black', 'Green', 'Red']
-
-
-def generate_forms():
-    type_form = TypeForm()
-    type_form.card_type.choices = TYPES
-
-    color_form = ColorForm()
-    color_form.color.choices = COLORS
-
-    rarity_form = RarityForm()
-    rarity_form.rarity.choices = RARITIES
-
-    set_form = SetForm()
-    set_form.set_name.choices = SETS
-
-    return [type_form, color_form, rarity_form, set_form]
 
 
 @ home_blueprint.route('/')
@@ -54,6 +31,7 @@ def welcome():
 
 @ home_blueprint.route('/home')
 def show_homepage():
+    """Route for showing the home page with nav bar and all cards paginated"""
     base_url = '/home?'
     page = determine_page(request.args)
     index_range = determine_index_range(page)
@@ -64,7 +42,7 @@ def show_homepage():
 
 @ home_blueprint.route('/home/search')
 def search():
-
+    """Route for showing all the cards/users/friends/decks resulting from a search"""
     term = request.args['term']
     category = request.args['category']
 
@@ -75,6 +53,7 @@ def search():
 
 
 def handle_category(category, term):
+    """Executes the render_template function accordingly depending on the search category & term"""
     keyword = category
     if category == 'decks':
         decks = Deck.query.filter(
@@ -98,7 +77,7 @@ def handle_category(category, term):
 
 
 def search_cards(term, category, req_args):
-
+    """Executes the render_template function for cards specifically"""
     base_url = f'/home/search?term={term}&category={category}&'
 
     page = determine_page(request.args)
@@ -109,57 +88,22 @@ def search_cards(term, category, req_args):
 
     cards = [card for card in all_cards if (all_cards.index(
         card) + 1) in index_range]
-    if len(cards) == 0:
-        flash('No results found.', 'danger')
     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
-# @home_blueprint.route('/home/filter')
-# def filter_cards():
-
-#     types = generate_filter_terms('card_type', TYPES, request.args)
-#     sets = generate_filter_terms('set_name', SETS, request.args)
-#     colors = generate_filter_terms('colors', COLORS, request.args)
-#     rarities = generate_filter_terms('rarities', RARITIES, request.args)
-
-#     base_url = f'/home/filter?card_type={types}&sets={sets}&colors={colors}&rarities={rarities}&'
-
-#     page = determine_page(request.args)
-#     index_range = determine_index_range(page)
-
-#     filtered_cards = generate_filtered_cards(
-#         types, sets, colors, rarities, index_range)
-
-#     return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=filtered_cards)
-
-
 def render_homepage(cards, base_url, page, index_range):
+    """Determines how the home page should be rendered depending on the results from previous functions"""
     decks = Deck.query.all()
 
     bookmarks = Bookmark.query.all()
     bookmarked_card_ids = [bookmark.card_id for bookmark in bookmarks]
-
-    forms = generate_forms()
-
-    type_form = forms[0]
-    color_form = forms[1]
-    rarity_form = forms[2]
-    set_form = forms[3]
-    # power_form = forms[4]
-    # toughness_form = forms[5]
     if len(cards) == 0:
         flash('No results found.', 'danger')
-    return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, type_form=type_form, color_form=color_form, rarity_form=rarity_form, set_form=set_form, bookmarked_card_ids=bookmarked_card_ids)
-
-
-# def generate_filter_terms(category, default_terms, req_args):
-#     terms = default_terms
-#     if category in req_args and len(req_args[category]) > 0:
-#         terms = req_args[category].split(',')
-#     return terms
+    return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, bookmarked_card_ids=bookmarked_card_ids)
 
 
 def determine_page(req_args):
+    """Determines which page of cards the user should be on"""
     page = 1
     if 'page' in req_args:
         page = int(req_args['page'])
@@ -167,14 +111,8 @@ def determine_page(req_args):
 
 
 def determine_index_range(page):
+    """Determines the range of cards that should be on this page"""
     first_card_index = ((page-1)*100) + 1
     last_card_index = (page*100) + 1
     index_range = range(first_card_index, last_card_index)
     return index_range
-
-
-# def generate_filtered_cards(types, sets, colors, rarities, index_range):
-#     filtered_cards = Card.query.filter(Card.card_type.in_(types) & Card.set_name.in_(
-#         sets) & Card.colors.in_(colors) & Card.rarity.in_(rarities)).all()
-#     return [card for card in filtered_cards if (
-#         filtered_cards.index(card) + 1) in index_range]

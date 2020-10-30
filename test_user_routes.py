@@ -3,6 +3,7 @@ import os
 from unittest import TestCase
 from users import check_confirmed_pwd
 
+from forms import NewPostForm
 from models import db, User, Bookmark, bcrypt
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
@@ -33,6 +34,7 @@ class UserRoutesTestCase(TestCase):
         db.session.rollback()
 
     def test_register(self):
+        """Test that register route works"""
         with self.client as c:
             resp = c.get('/register')
 
@@ -43,6 +45,7 @@ class UserRoutesTestCase(TestCase):
                 '<button class="btn btn-success" type="submit">Register</button>', str(resp.data))
 
     def test_login(self):
+        """Test that login route works"""
         with self.client as c:
             resp = c.get('/login')
 
@@ -53,6 +56,7 @@ class UserRoutesTestCase(TestCase):
                 '<button class="btn btn-success" type="submit">Login</button>', str(resp.data))
 
     def test_logout(self):
+        """Test that logout route works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
@@ -66,6 +70,7 @@ class UserRoutesTestCase(TestCase):
                 '<button class="btn btn-success" type="submit">Login</button>', str(resp.data))
 
     def test_user_profile(self):
+        """Test that route for viewing a user's profile works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
@@ -77,11 +82,12 @@ class UserRoutesTestCase(TestCase):
             self.assertIn('<h5>Decks: 0</h5>', str(resp.data))
 
     def test_edit_profile(self):
+        """Test that route for editing your own profile works"""
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
 
-            resp = c.get(f'/users/{{self.user1.username}}/edit')
+            resp = c.get(f'/users/{self.user1.username}/edit')
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('Email', str(resp.data))

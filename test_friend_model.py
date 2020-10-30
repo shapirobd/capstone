@@ -34,5 +34,6 @@ class FriendModelTestCase(TestCase):
         db.drop_all()
 
     def test_friend_model(self):
+        """Test that basic friend model works"""
         self.assertEqual(self.friendship.user1_username, 'username_1')
         self.assertEqual(self.friendship.user2_username, 'username_2')

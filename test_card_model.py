@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 import requests
 
-from models import db, User, Card, Bookmark, bcrypt
+from models import db, User, Card, Bookmark
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
 
@@ -16,7 +16,8 @@ class CardModelTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
-
+        Bookmark.query.delete()
+        Card.query.delete()
         db.create_all()
 
         self.client = app.test_client()
@@ -25,19 +26,30 @@ class CardModelTestCase(TestCase):
             'key': "$2a$10$TNyqKQQQSzVjgGXY87waZuBIKAS78.NkY2o.H004TfBU.eISv.Pt6",
             'page': 1
         }).json()
-        print(self.resp)
+
         self.cards = self.resp['cards']
-        print(self.cards)
+
         Card.create_all_cards(self.cards)
-        print('Cards Created')
+
         db.session.commit()
 
-        self.card = Card.query.filter(Card.name == 'Abundance').first()
-
     def tearDown(self):
-        db.drop_all()
+        db.session.rollback()
 
     def test_card_model(self):
-        # <-- THIS PRINTS 'Abundance', SO I HAVE NO IDEA WHY THE BELOW ASSERTION IS NOT WORKING (IT JUST PAUSES INFINITELY WITH NO OUTPUT). COULD NOT FIND A SOLUTION ONLINE
-        print(self.card.name)
-        self.assertEqual(self.card.name, 'Abundance')
+        """Test that basic card model works"""
+        card = Card.query.filter(Card.name == 'Abundance').first()
+        self.assertEqual(card.name, 'Abundance')
+        print(card.name)
+
+    def test_create_all_cards(self):
+        for page in range(2, 11):
+            """Test that create_all_cards method works correctly"""
+            resp = requests.get('http://api.magicthegathering.io/v1/cards', {
+                'key': "$2a$10$TNyqKQQQSzVjgGXY87waZuBIKAS78.NkY2o.H004TfBU.eISv.Pt6",
+                'page': page
+            }).json()
+            cards = resp['cards']
+            Card.create_all_cards(cards)
+
+        self.assertEqual(len(Card.query.all()), 1000)

@@ -16,7 +16,7 @@ class BookmarkModelTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
-
+        db.drop_all()
         db.create_all()
 
         self.client = app.test_client()
@@ -35,16 +35,24 @@ class BookmarkModelTestCase(TestCase):
         db.session.commit()
 
     def tearDown(self):
-        db.drop_all()
+        db.session.rollback()
 
     def test_bookmark_model(self):
         bookmark = Bookmark(username=self.user.username,
                             card_id=1)
         db.session.add(bookmark)
         db.session.commit()
-        print(bookmark.username)
-        # ^^ THIS PRINTS 'usernametest', SO I HAVE NO IDEA WHY THE BELOW ASSERTION IS NOT WORKING (IT JUST PAUSES INFINITELY WITH NO OUTPUT). COULD NOT FIND A SOLUTION ONLINE
-        print(bookmark.card_id)
-        # ^^ THIS PRINTS '1', SO I HAVE NO IDEA WHY THE BELOW ASSERTION IS NOT WORKING (IT JUST PAUSES INFINITELY WITH NO OUTPUT). COULD NOT FIND A SOLUTION ONLINE
+
         self.assertEqual(bookmark.username, 'usernametest')
         self.assertEqual(bookmark.card_id, 1)
+
+    def test_bookmark_serialize(self):
+        bookmark = Bookmark(username=self.user.username,
+                            card_id=1)
+        db.session.add(bookmark)
+        db.session.commit()
+
+        self.assertEqual(bookmark.serialize(),
+                         {'id': bookmark.id,
+                          'username': bookmark.username,
+                          'card_id': bookmark.card_id})
