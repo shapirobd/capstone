@@ -5,7 +5,6 @@ import os
 import mtgsdk
 import flask_paginate
 
-# from mtgsdk import Type
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
@@ -40,19 +39,34 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        if not check_confirmed_pwd(form.password.data, form.confirmed_password.data):
-            flash('Passwords must match - please try again.', 'danger')
-            return redirect('/register')
-        image_url = form.image_url.data or "/static/images/default_prof_pic.png"
-        user = User.signup(username=form.username.data, password=form.password.data,
-                           email=form.email.data, image_url=image_url)
-        if user:
-            db.session.commit()
-            session[CURR_USER_KEY] = form.username.data
-            return redirect('/home')
-        flash('Username or password is incorrect', 'danger')
-        return redirect('/login')
+        return handle_register_form_errors(form)
     return render_template('register.html', form=form)
+
+
+def handle_register_form_errors(form):
+    """Determines & handles errors found in register user form. If no errors found, creates new user."""
+    if User.query.get(form.username.data):
+        flash(
+            f'The username "{form.username.data}" is already taken', 'danger')
+        return redirect('/register')
+    if len(User.query.filter(User.email == form.email.data).all()) > 0:
+        flash('That email address is already taken', 'danger')
+        return redirect('/register')
+    if not check_confirmed_pwd(form.password.data, form.confirmed_password.data):
+        flash('Passwords must match - please try again.', 'danger')
+        return redirect('/register')
+    return complete_register(form)
+
+
+def complete_register(form):
+    """Creates a new user from the form data and logs that user in"""
+    image_url = form.image_url.data or "/static/images/default_prof_pic.png"
+    if User.signup(username=form.username.data, password=form.password.data,
+                   email=form.email.data, image_url=image_url):
+        db.session.commit()
+        session[CURR_USER_KEY] = form.username.data
+        return redirect('/home')
+    return redirect('/login')
 
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
@@ -96,12 +110,14 @@ def check_confirmed_pwd(pwd, confirmed_pwd):
 
 @users_blueprint.route('/users/<string:username>', methods=['GET', 'POST'])
 def user_profile(username):
-    """Route for viewing a user's profile"""
+    """
+    GET: Route for viewing a user's profile
+    POST: Create a new Post instance and put it on your page
+    """
     if g.user:
         form = NewPostForm()
         if g.user.username == username:
             if form.validate_on_submit():
-                """If this is a post request, create a new Post instance and put it on your page"""
                 post = Post(username=username, title=form.title.data,
                             content=form.content.data)
                 db.session.add(post)
@@ -114,32 +130,36 @@ def user_profile(username):
 
 @users_blueprint.route('/users/<string:username>/edit', methods=['GET', 'POST'])
 def edit_profile(username):
-    """Route for editting your profile"""
+    """
+    GET: Route for editting your profile
+    POST: Update the user's data
+    """
     if g.user:
         form = EditUserForm()
         user = User.query.get(g.user.username)
 
         if form.validate_on_submit():
-            """If this is a post request, update the user's data"""
             user.email = form.email.data
-            if form.password.data == form.confirmed_password.data:
+            user.image_url = form.image_url.data or "/static/images/default_prof_pic.png"
+            if check_confirmed_pwd(form.password.data, form.confirmed_password.data):
                 user.password = bcrypt.generate_password_hash(
                     form.password.data).decode('UTF-8')
             else:
                 flash('Passwords do not match - please try again.', 'danger')
                 return redirect(f'/users/{user.username}/edit')
 
-            user.image_url = form.image_url.data or "/static/images/default_prof_pic.png"
-
             db.session.add(user)
             db.session.commit()
-
             return redirect('/home')
 
-        form.email.data = user.email
-        form.password.data = user.password
-        form.confirmed_password.data = user.password
-        form.image_url.data = user.image_url
-
+        populate_edit_profile_fields(form, user)
         return render_template('edit_user.html', form=form)
     return render_template('/login')
+
+
+def populate_edit_profile_fields(form, user):
+    """Populates edit user form fields"""
+    form.email.data = user.email
+    form.password.data = user.password
+    form.confirmed_password.data = user.password
+    form.image_url.data = user.image_url
