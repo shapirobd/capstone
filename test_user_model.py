@@ -63,10 +63,11 @@ class UserModelTestCase(TestCase):
 
     def test_user_authenticate(self):
         """Test that authenticate class method works"""
-        username = self.user1.username
-        good_password = 'user1password'
-        bad_password = 'user2password'
         self.assertEqual(User.authenticate(
-            username=username, password=good_password), self.user1)
+            username=self.user1.username, password='user1password'), self.user1)
         self.assertFalse(User.authenticate(
-            username=username, password=bad_password))
+            username=self.user1.username, password='user2password'))
+        self.assertFalse(User.authenticate(
+            username=self.user2.username, password='user1password'))
+        self.assertFalse(User.authenticate(
+            username='someotherusername', password='someotherpassword'))

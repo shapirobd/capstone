@@ -16,8 +16,8 @@ class DeckModelTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
-        # Deck.query.delete()
-        # Bookmark.query.delete()
+        Deck.query.delete()
+        Bookmark.query.delete()
         User.query.delete()
 
         db.create_all()

@@ -1,9 +1,9 @@
 from app import app, CURR_USER_KEY
 import os
 from unittest import TestCase
-from users import check_confirmed_pwd
-
-from forms import NewPostForm
+from users import check_confirmed_pwd, handle_register_form_errors
+from flask import redirect
+from forms import NewPostForm, RegisterForm
 from models import db, User, Bookmark, bcrypt
 from sqlalchemy.exc import IntegrityError
 from psycopg2.errors import UniqueViolation
@@ -94,3 +94,70 @@ class UserRoutesTestCase(TestCase):
             self.assertIn('Password', str(resp.data))
             self.assertIn('Confirm Password', str(resp.data))
             self.assertIn('Profile Picture', str(resp.data))
+
+    def test_register_form_valid(self):
+        """Test that function for handling register form errors works (with no errors, this executes the complete_register() function)"""
+        with self.client as c:
+            with app.test_request_context():
+                form_data = {
+                    'email': 'email@gmail.com',
+                    'username': 'username123',
+                    'password': 'password321',
+                    'confirmed_password': 'password321',
+                    'image_url': None
+                }
+                form = RegisterForm(data=form_data)
+                handle_register_form_errors(form)
+                self.assertTrue(User.query.get('username123'))
+
+    def test_register_form_taken_email(self):
+        """Test that function for handling register form errors redicrects to /register if email taken"""
+        with self.client as c:
+            with app.test_request_context():
+                form_data = {
+                    'email': 'email1@gmail.com',
+                    'username': 'username123',
+                    'password': 'password321',
+                    'confirmed_password': 'password321',
+                    'image_url': None
+                }
+                form = RegisterForm(data=form_data)
+                resp = handle_register_form_errors(form)
+                self.assertFalse(User.query.get('username123'))
+                self.assertEqual(
+                    '/register', resp.location)
+
+    def test_register_form_taken_username(self):
+        """Test that function for handling register form errors redicrects to /register if username taken"""
+        with self.client as c:
+            with app.test_request_context():
+                form_data = {
+                    'email': 'email@gmail.com',
+                    'username': 'username_1',
+                    'password': 'password321',
+                    'confirmed_password': 'password321',
+                    'image_url': None
+                }
+                form = RegisterForm(data=form_data)
+                resp = handle_register_form_errors(form)
+                self.assertEqual(len(User.query.filter(
+                    User.email == 'email@gmail.com').all()), 0)
+                self.assertEqual(
+                    '/register', resp.location)
+
+    def test_register_form_nonmatching_pwd(self):
+        """Test that function for handling register form errors redicrects to /register if passwords don't match"""
+        with self.client as c:
+            with app.test_request_context():
+                form_data = {
+                    'email': 'email@gmail.com',
+                    'username': 'username123',
+                    'password': 'password321',
+                    'confirmed_password': 'password3210',
+                    'image_url': None
+                }
+                form = RegisterForm(data=form_data)
+                resp = handle_register_form_errors(form)
+                self.assertFalse(User.query.get('username123'))
+                self.assertEqual(
+                    '/register', resp.location)
