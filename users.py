@@ -9,7 +9,7 @@ import flask_paginate
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Friendship, Card, Bookmark, Deck, CardDeck, Post
+from models import db, connect_db, User, Friendship, Card, Bookmark, Deck, CardDeck, Post, bcrypt
 from forms import LoginForm, RegisterForm, DeckForm, EditUserForm, NewPostForm
 
 users_blueprint = Blueprint('users_blueprint', __name__, static_folder='static',
@@ -40,9 +40,11 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        check_confirmed_pwd(form.password.data, form.confirmed_password.data)
+        if not check_confirmed_pwd(form.password.data, form.confirmed_password.data):
+            flash('Passwords must match - please try again.', 'danger')
+            return redirect('/register')
         image_url = form.image_url.data or "/static/images/default_prof_pic.png"
-        user = User.signup(username=form.username.data, db_session=db.session, password=form.password.data,
+        user = User.signup(username=form.username.data, password=form.password.data,
                            email=form.email.data, image_url=image_url)
         if user:
             db.session.commit()
@@ -88,8 +90,8 @@ def logout():
 def check_confirmed_pwd(pwd, confirmed_pwd):
     """Checks that the confirmed password matches upon registering"""
     if pwd != confirmed_pwd:
-        flash('Passwords must match - please try again.', 'danger')
-        return redirect('/register')
+        return False
+    return True
 
 
 @users_blueprint.route('/users/<string:username>', methods=['GET', 'POST'])
@@ -121,7 +123,8 @@ def edit_profile(username):
             """If this is a post request, update the user's data"""
             user.email = form.email.data
             if form.password.data == form.confirmed_password.data:
-                user.password = form.password.data
+                user.password = bcrypt.generate_password_hash(
+                    form.password.data).decode('UTF-8')
             else:
                 flash('Passwords do not match - please try again.', 'danger')
                 return redirect(f'/users/{user.username}/edit')
