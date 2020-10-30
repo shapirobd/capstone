@@ -24,25 +24,30 @@ def view_decks():
     if g.user:
         decks = g.user.decks
         return render_template('decks.html', decks=decks)
+    return redirect('/login')
 
 
 @decks_blueprint.route('/decks/<int:deck_id>')
 def show_deck(deck_id):
     """Route for viewing contents of deck"""
-    deck = Deck.query.get(deck_id)
+    if g.user:
+        deck = Deck.query.get(deck_id)
 
-    bookmarks = Bookmark.query.all()
-    bookmarked_card_ids = [bookmark.card_id for bookmark in bookmarks]
-    return render_template('deck.html', deck=deck, bookmarked_card_ids=bookmarked_card_ids)
+        bookmarks = Bookmark.query.all()
+        bookmarked_card_ids = [bookmark.card_id for bookmark in bookmarks]
+        return render_template('deck.html', deck=deck, bookmarked_card_ids=bookmarked_card_ids)
+    return redirect('/login')
 
 
 @decks_blueprint.route('/decks/<int:deck_id>/delete', methods=['POST'])
 def delete_deck(deck_id):
     """Route for deleting a deck"""
-    deck = Deck.query.get(deck_id)
-    db.session.delete(deck)
-    db.session.commit()
-    return redirect('/decks')
+    if g.user:
+        deck = Deck.query.get(deck_id)
+        db.session.delete(deck)
+        db.session.commit()
+        return redirect('/decks')
+    return redirect('/login')
 
 
 @decks_blueprint.route('/new', methods=['GET', 'POST'])
@@ -67,7 +72,7 @@ def create_deck():
 
             return redirect('/decks')
         return render_template('new_deck.html', form=form)
-    return redirect('/')
+    return redirect('/login')
 
 
 @decks_blueprint.route('/cards/<int:card_id>/decks/<int:deck_id>', methods=['POST'])
@@ -81,6 +86,7 @@ def add_to_deck(card_id, deck_id):
 
         db.session.commit()
         return redirect('/home')
+    return redirect('/login')
 
 
 @decks_blueprint.route('/cards/<int:card_id>/decks/<int:deck_id>/delete', methods=['POST'])
@@ -94,6 +100,7 @@ def delete_from_deck(card_id, deck_id):
         db.session.commit()
 
         return redirect(f'/decks/{deck_id}')
+    return redirect('/login')
 
 
 @decks_blueprint.route('/users/<string:username>/decks')

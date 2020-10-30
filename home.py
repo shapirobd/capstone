@@ -32,12 +32,14 @@ def welcome():
 @ home_blueprint.route('/home')
 def show_homepage():
     """Route for showing the home page with nav bar and all cards paginated"""
-    base_url = '/home?'
-    page = determine_page(request.args)
-    index_range = determine_index_range(page)
-    cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
+    if g.user:
+        base_url = '/home?'
+        page = determine_page(request.args)
+        index_range = determine_index_range(page)
+        cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
 
-    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
+        return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
+    return redirect('/login')
 
 
 @ home_blueprint.route('/home/search')

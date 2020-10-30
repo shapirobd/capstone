@@ -80,7 +80,8 @@ def login():
 @users_blueprint.route('/logout')
 def logout():
     """Logs out a user and redirets them to the login page"""
-    do_logout()
+    if g.user:
+        do_logout()
     return redirect('/login')
 
 
