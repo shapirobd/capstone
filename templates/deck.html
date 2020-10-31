@@ -12,7 +12,7 @@
 							alt="..."
 						/>
 						<button
-							class="btn btn-sm btn-secondary my-1"
+							class="btn btn-md btn-secondary my-1 show-info-btn unselected"
 							type="button"
 							data-toggle="collapse"
 							data-target="#info-{{card.id}}"
@@ -20,15 +20,30 @@
 							aria-controls="collapseExample"
 						>
 							Show Info
+							<i class="show-info-unselected fas fa-caret-left"></i>
 						</button>
 						<div class="collapse" id="info-{{card.id}}">
-							<div class="card-body">
-								<h5 class="card-title">{{card.name}}</h5>
-								{% for attr, value in card.__dict__.items() %} {% if attr !=
-								'image_url' and attr != 'text' and attr != '_sa_instance_state'
-								and value and value != '' %}
-								<p><b>{{attr}}:</b> {{value}}</p>
-								{% else %} {% endif %} {% endfor %}
+							<div class="card-body px-0">
+								<div class="row justify-content-center align-items-center">
+									<h5 class="card-title">{{card.name}}</h5>
+								</div>
+								<table class="table ml-0 mb-0 text-light">
+									<tbody>
+										{% for attr, value in card.__dict__.items() %} 
+											{% if attr !='image_url' and attr != 'text' and attr != 'id' and attr != '_sa_instance_state' and value and value != '' %}
+												<tr>
+													<th scope="row" class="pb-0">
+														<p><b>{{attr.upper().replace('_', ' ')}}</b></p>
+													</th>
+													<td class="text-small pb-3">
+														<small>{{value}}</small>
+													</td>
+												</tr>
+											{% endif %}
+										{% endfor %}
+									</tbody>
+								
+								</table>
 							</div>
 						</div>
                         <div class="col">
