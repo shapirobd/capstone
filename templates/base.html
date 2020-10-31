@@ -20,50 +20,48 @@
 
 	<body class="{% block body_class %}{% endblock %}">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<div class="col-7">
-				<div class="row">
-					<a class="navbar-brand" href="/"
-						><img style="height: 35px" src="/static/images/mtg_logo.png"
-					/></a>
-					<form
-						class="form-inline my-2 my-lg-0 col-11 px-0"
-						action="/home/search"
-					>
-						<div class="input-group col">
-							<input
-								type="text"
-								class="form-control input-group-append col-7"
-								name="term"
-								placeholder="Search..."
-								aria-label="term"
-								aria-describedby="button-addon2"
-							/>
-							<select
-								class="custom-select col-3"
-								name="category"
-								aria-label="category"
-							>
-								<option disabled>Choose...</option>
-								<option value="card">Cards</option>
-								<option value="deck">Decks</option>
-								<option value="friend">Friends</option>
-								<option value="user">Users</option>
-							</select>
+			<a class="navbar-brand mx-0" href="/"
+				><img style="height: 35px" src="/static/images/mtg_logo.png"
+			/></a>
+			<div class="col">
+				<form
+					class="form-inline my-2 my-lg-0 col-11 px-0"
+					action="/home/search"
+				>
+					<div class="input-group col">
+						<input
+							type="text"
+							class="form-control input-group-append col-7"
+							name="term"
+							placeholder="Search..."
+							aria-label="term"
+							aria-describedby="button-addon2"
+						/>
+						<select
+							class="custom-select col-3"
+							name="category"
+							aria-label="category"
+						>
+							<option disabled>Choose...</option>
+							<option value="card">Cards</option>
+							<option value="deck">Decks</option>
+							<option value="friend">Friends</option>
+							<option value="user">Users</option>
+						</select>
 
-							<div class="input-group-append">
-								<button
-									class="btn btn-outline-light"
-									type="submit"
-									id="button-addon2"
-								>
-									Search
-								</button>
-							</div>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-light"
+								type="submit"
+								id="button-addon2"
+							>
+								Search
+							</button>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
-			<div class="col-5">
+			<div class="col-sm-1 col-lg-4 col-xl-5 justify-content-end">
 				<button
 					class="navbar-toggler"
 					type="button"
