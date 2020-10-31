@@ -45,6 +45,14 @@ ul {
 	max-height: 400px;
 }
 
+.add-to-deck-unselected:active {
+	transition-duration: 0.5s;
+}
+
+.add-to-deck-selected:active {
+	transition-duration: 0.5s;
+}
+
 /* input[type="checkbox"] {
 	display: none;
 }

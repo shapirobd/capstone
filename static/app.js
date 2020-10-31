@@ -27,6 +27,23 @@ $('.bookmark-btn-form').each(function() {
     })
 })
 
+$('.add-to-deck-btn').each(function() {
+    let btn = $(this)[0]
+    $(btn).on('click', async function(evt) {
+        evt.preventDefault()
+        if ($(btn).hasClass('unselected')) {
+            let logo = $(btn).find('i')
+            $(btn).removeClass('unselected')
+            $(btn).addClass('selected')
+            $(logo).replaceWith('<i class="fas fa-caret-down"></i>')
+        } else if ($(btn).hasClass('selected')) {
+            let logo = $(btn).find('i')
+            $(btn).removeClass('selected')
+            $(btn).addClass('unselected')
+            $(logo).replaceWith('<i class="fas fa-caret-left"></i>')
+        }
+    })
+})
 // $('.bookmark-form').on('submit', async function(evt) {
 //     evt.preventDefault()
     

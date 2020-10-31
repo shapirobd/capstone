@@ -44,7 +44,7 @@
 								</form>
 
 								<button
-									class="col btn btn-sm btn-secondary ml-1"
+									class="col btn btn-md btn-primary ml-1 add-to-deck-btn unselected"
 									type="button"
 									data-toggle="collapse"
 									data-target="#add-{{card.id}}"
@@ -52,6 +52,7 @@
 									aria-controls="collapseExample"
 								>
 									Add to Deck
+									<i class="add-to-deck-unselected fas fa-caret-left"></i>
 								</button>
 							</div>
 						</div>
@@ -64,11 +65,16 @@
 											action="/cards/{{card.id}}/decks/{{deck.id}}"
 											method="POST"
 										>
-											<button class="col btn btn-md btn-primary my-1">
+											<button class="col btn btn-md btn-outline-primary mt-1">
 												{{deck.deck_name}}
 											</button>
 										</form>
 										{% endfor %}
+										<a
+											class="col btn btn-md btn-outline-light mt-1"
+											href="/new?card-to-add={{card.id}}"
+											>Create Deck <i class="fas fa-plus"></i
+										></a>
 									</div>
 								</div>
 							</div>
