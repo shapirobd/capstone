@@ -35,11 +35,11 @@
                             <div class="row">
                                 {% if card.id in bookmarked_card_ids %}
                                     <form action="/cards/{{card.id}}/unbookmark" method='POST'>
-                                        <button class="col btn btn-md btn-primary"><i class="fas fa-bookmark"></i></button>
+                                        <button class="col btn btn-md btn-primary rounded-circle"><i class="fas fa-bookmark"></i></button>
                                     </form>
                                 {% else %}
                                     <form action="/cards/{{card.id}}/bookmark" method='POST'>
-                                        <button class="col btn btn-md btn-primary"><i class="far fa-bookmark"></i></button>
+                                        <button class="col btn btn-md btn-primary rounded-circle"><i class="far fa-bookmark"></i></button>
                                     </form>
                                 {% endif %}
                                 <form action="/cards/{{card.id}}/decks/{{deck.id}}/delete" method='POST'>

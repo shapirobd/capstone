@@ -53,6 +53,10 @@ ul {
 	transition-duration: 0.5s;
 }
 
+.btn:focus {
+	box-shadow: none;
+}
+
 /* input[type="checkbox"] {
 	display: none;
 }
