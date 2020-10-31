@@ -15,7 +15,7 @@ body {
 }
 
 .scroll {
-	max-height: 88vh;
+	max-height: 92vh;
 	overflow-y: auto;
 }
 
