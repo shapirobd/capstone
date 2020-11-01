@@ -38,7 +38,7 @@ def show_homepage():
         index_range = determine_index_range(page)
         all_cards = Card.query.all()
         last_page = determine_last_page(all_cards)
-        cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
+        cards = Card.query.filter((Card.id).in_(index_range)).all()
 
         return render_homepage(all_cards=all_cards, last_page=last_page, base_url=base_url, page=page, index_range=index_range, cards=cards)
     return redirect('/login')
