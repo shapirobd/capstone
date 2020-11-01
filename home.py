@@ -4,6 +4,7 @@ import os
 import json
 import mtgsdk
 import flask_paginate
+import math
 
 from app import g
 from flask import Flask, Blueprint, session, request, render_template, redirect, flash, jsonify
@@ -25,7 +26,6 @@ def welcome():
     """
     if not g.user:
         return render_template('welcome.html')
-
     return redirect('/home')
 
 
@@ -36,9 +36,11 @@ def show_homepage():
         base_url = '/home?'
         page = determine_page(request.args)
         index_range = determine_index_range(page)
+        all_cards = Card.query.all()
+        last_page = determine_last_page(all_cards)
         cards = Card.query.filter((Card.id + 1).in_(index_range)).all()
 
-        return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
+        return render_homepage(last_page=last_page, base_url=base_url, page=page, index_range=index_range, cards=cards)
     return redirect('/login')
 
 
@@ -88,20 +90,23 @@ def search_cards(term, category, req_args):
     all_cards = Card.query.filter(
         Card.name.ilike(f'%{term}%')).all()
 
+    last_page = determine_last_page(all_cards)
+
     cards = [card for card in all_cards if (all_cards.index(
         card) + 1) in index_range]
-    return render_homepage(base_url=base_url, page=page, index_range=index_range, cards=cards)
+    return render_homepage(last_page=last_page, base_url=base_url, page=page, index_range=index_range, cards=cards)
 
 
-def render_homepage(cards, base_url, page, index_range):
+def render_homepage(last_page, cards, base_url, page, index_range):
     """Determines how the home page should be rendered depending on the results from previous functions"""
     decks = Deck.query.all()
 
     bookmarks = Bookmark.query.all()
     bookmarked_card_ids = [bookmark.card_id for bookmark in bookmarks]
+
     if len(cards) == 0:
         flash('No results found.', 'danger')
-    return render_template('home.html', page=page, base_url=base_url, cards=cards, decks=decks, bookmarked_card_ids=bookmarked_card_ids)
+    return render_template('home.html', page=page, last_page=last_page, base_url=base_url, cards=cards, decks=decks, bookmarked_card_ids=bookmarked_card_ids)
 
 
 def determine_page(req_args):
@@ -118,3 +123,7 @@ def determine_index_range(page):
     last_card_index = (page*100) + 1
     index_range = range(first_card_index, last_card_index)
     return index_range
+
+
+def determine_last_page(cards):
+    return math.ceil(len(cards)/100)
