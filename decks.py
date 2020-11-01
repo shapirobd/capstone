@@ -22,8 +22,9 @@ CURR_USER_KEY = 'curr-user'
 def view_decks():
     """Route for viewing your own decks"""
     if g.user:
+        user = g.user
         decks = g.user.decks
-        return render_template('decks.html', decks=decks)
+        return render_template('decks.html', decks=decks, user=user)
     return redirect('/login')
 
 
@@ -108,4 +109,4 @@ def show_users_decks(username):
     """Route for viewing someone else's decks"""
     user = User.query.get(username)
     decks = user.decks
-    return render_template('decks.html', decks=decks)
+    return render_template('decks.html', decks=decks, user=user)

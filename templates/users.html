@@ -24,11 +24,21 @@
 					>View Decks</a
 				>
 				{% if user.username != g.user.username and user not in g.user.friends %}
-				<form action="/add_friend/{{user.username}}" method="POST">
+				<form
+					action=""
+					method="POST"
+					class="add-friend-form friend-btn-form"
+					id="{{user.username}}"
+				>
 					<button class="btn btn-sm btn-primary col my-1">Add Friend</button>
 				</form>
 				{% elif user in g.user.friends %}
-				<form action="/remove_friend/{{user.username}}" method="POST">
+				<form
+					action=""
+					method="POST"
+					class="remove-friend-form friend-btn-form"
+					id="{{user.username}}"
+				>
 					<button class="btn btn-sm btn-danger col my-1">Remove Friend</button>
 				</form>
 				{% endif %}

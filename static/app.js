@@ -27,6 +27,35 @@ $('.bookmark-btn-form').each(function() {
     })
 })
 
+$('.friend-btn-form').each(function() {
+    let form = $(this)[0]
+    let username = form.id
+    $(form).on('submit', async function(evt) {
+        evt.preventDefault()
+        if ($(form).hasClass('add-friend-form')) {
+            axios.post(`/add_friend/${username}`, {
+                'username': username
+            })
+        
+            $(form).empty()
+            $(form).attr('action', `/remove_friend/${username}`);
+            $(form).removeClass('add-friend-form')
+            $(form).addClass('remove-friend-form')
+            $(form).append(`<button class="btn btn-sm btn-danger col my-1">Remove Friend</button>`)
+        } else if ($(form).hasClass('remove-friend-form')) {
+            axios.post(`/remove_friend/${username}`, {
+                'username': username
+            })
+        
+            $(form).empty()
+            $(form).attr('action', `/add_friend/${username}`);
+            $(form).removeClass('remove-friend-form')
+            $(form).addClass('add-friend-form')
+            $(form).append(`<button class="btn btn-sm btn-primary col my-1">Add Friend</button>`)
+        }
+    })
+})
+
 $('.add-to-deck-btn').each(function() {
     let btn = $(this)[0]
     $(btn).on('click', function(evt) {
@@ -67,5 +96,16 @@ $('.delete-from-deck-btn').each(function() {
 
         await axios.post(`/cards/${cardId}/decks/${deckId}/delete`)
         $(`#card-${cardId}-col`).remove()
+    })
+})
+
+$('.delete-from-friends-btn').each(function() {
+    let btn = $(this)[0]
+    $(btn).on('click', async function(evt) {
+        evt.preventDefault()
+        let friendUsername = $(btn).attr('id')
+
+        await axios.post(`/remove_friend/${friendUsername}`)
+        $(`#friend-${friendUsername}-col`).remove()
     })
 })

@@ -2,6 +2,9 @@
 
 <div class="container" id="main">
 	<div class="row justify-content-center">
+		<h1 class="display-3 text-white my-3">{{user.username}}'s Decks</h1>
+	</div>
+	<div class="row justify-content-center">
 		{% for category, message in get_flashed_messages(with_categories=True) %}
 		<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
 		{% endfor %}

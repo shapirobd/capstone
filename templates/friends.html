@@ -1,13 +1,16 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="container my-5">
+<div class="container">
+	<div class="row justify-content-center">
+		<h1 class="display-3 my-3 text-white">Friends</h1>
+	</div>
 	<div class="row justify-content-center">
 		{% for category, message in get_flashed_messages(with_categories=True) %}
 		<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
 		{% endfor %}
 		<div class="col-6 text-white">
 			{% for friend in friends %}
-			<div class="col-6 text-white">
+			<div class="col-6 text-white" id="friend-{{friend.username}}-col">
 				<img src="{{friend.image_url}}" class="img-thumbnail mb-2" alt="" />
 				<h3>{{friend.username}}</h3>
 				<h5>Decks: {{friend.decks | length}}</h5>
@@ -21,8 +24,18 @@
 					href="/users/{{friend.username}}/decks"
 					>View Decks</a
 				>
-				<form action="/remove_friend/{{friend.username}}" method="POST">
-					<button class="btn btn-sm btn-danger col my-1">Remove Friend</button>
+				<form
+					action=""
+					method="POST"
+					class="remove-friend-form friend-btn-form"
+					id="{{friend.username}}"
+				>
+					<button
+						class="btn btn-sm btn-danger col my-1 delete-from-friends-btn"
+						id="{{friend.username}}"
+					>
+						Remove Friend
+					</button>
 				</form>
 			</div>
 		</div>
