@@ -28,14 +28,14 @@
 		</div>
 		<div class="col-8">
 			{% if g.user.username == user.username %}
-			<div class="jumbotron pb-2 pt-3">
-				<h1 class="display-5 text-dark text-center">Create Post</h1>
+			<div class="jumbotron bg-transparent pb-2 pt-3">
+				<h1 class="display-5 text-light text-center">Create Post</h1>
 				<form method="POST" action="" class="my-3">
 					{{form.hidden_tag()}} {% for field in form if field.widget.input_type
 					!= 'hidden' %}
 					<p>
-						{{field.label(class_='text-dark')}} {{field(class_="form-control")}}
-						{% for error in field.errors %}
+						{{field.label(class_='text-light')}}
+						{{field(class_="form-control")}} {% for error in field.errors %}
 						<span class="form-text text-danger">{{error}}</span>
 						{% endfor %}
 					</p>

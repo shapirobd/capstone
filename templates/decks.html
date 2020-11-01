@@ -11,8 +11,8 @@
 		<div class="row col-6 justify-content-center">
 			<div class="card text-white bg-transparent my-4" style="width: 18rem">
 				<img
-					src="/static/images/mtg_default.jpg"
-					class="card-img-top mtg-card"
+					src="/static/images/mtg_deck_img.jpg"
+					class="card-img-top mtg-card rounded-circle border border-light"
 					alt="..."
 				/>
 				<div class="row justify-content-center">
@@ -22,18 +22,22 @@
 					<h6 class="">{{deck.deck_type}}</h6>
 				</div>
 				<div class="row justify-content-around my-1">
-					<form action="/decks/{{deck.id}}/delete" method="POST">
-						<button
-							class="btn btn-danger"
-							data-toggle="collapse"
-							data-target="#info-{{deck.id}}"
-							aria-expanded="false"
-							aria-controls="collapseExample"
+					<div class="col col-12">
+						<form action="/decks/{{deck.id}}/delete" method="POST">
+							<button
+								class="btn btn-danger col mt-2"
+								data-toggle="collapse"
+								data-target="#info-{{deck.id}}"
+								aria-expanded="false"
+								aria-controls="collapseExample"
+							>
+								Delete
+							</button>
+						</form>
+						<a href="/decks/{{deck.id}}" class="btn btn-primary col my-1"
+							>View Deck</a
 						>
-							Delete
-						</button>
-					</form>
-					<a href="/decks/{{deck.id}}" class="btn btn-primary">View Deck</a>
+					</div>
 				</div>
 			</div>
 		</div>

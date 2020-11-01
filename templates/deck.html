@@ -1,10 +1,13 @@
 {% extends "base.html" %} {% block content %}
 <div class="row" id="main-home">
 
-		<div class="container col-12 scroll" id="main">
+		<div class="container scroll" id="main">
+			<div class="row justify-content-center my-4">
+				<h1 class='display-3 text-white'>{{deck.deck_name}}</h1>
+			</div>
 			<div class="row">
 				{% for card in deck.cards %}
-				<div class="col-sm-6 col-lg-4 col-xl-3">
+				<div class="col-sm-6 col-lg-4 col-xl-3" id='card-{{card.id}}-col'>
 					<div class="card text-white bg-transparent my-4 mx-3" style="width: 15rem">
 						<img
 							src="{{card.image_url}}"
@@ -57,24 +60,12 @@
                                         <button class="col btn btn-md btn-primary rounded-circle"><i class="far fa-bookmark"></i></button>
                                     </form>
                                 {% endif %}
-                                <form action="/cards/{{card.id}}/decks/{{deck.id}}/delete" method='POST'>
-                                    <button class="col btn btn-sm btn-danger ml-1">Remove from Deck</button>
-                                </form>
+                                    <button id="{{deck.id}}-{{card.id}}"
+									class="col btn btn-md btn-danger ml-1 delete-from-deck-btn unselected"
+									type="button"
+								>Remove from Deck</button>
                             </div>
                         </div>
-                        {# <div class="">
-                            <div class="row justify-content-center">
-                                <div class="collapse col" id="add-{{card.id}}">
-                                    <div class="">
-								        {% for deck in decks %}
-                                            <form action="/cards/{{card.id}}/decks/{{deck.id}}" method="POST">
-                                                <button class="col btn btn-md btn-primary my-1">{{deck.deck_name}}</button>
-                                            </form>
-                                        {% endfor %}
-							        </div>
-						        </div>
-                            </div>
-                        </div> #}
 					</div>
 				</div>
 				{% endfor %}

@@ -56,30 +56,16 @@ function toggleDropdownIcon(btn) {
         $(logo).replaceWith('<i class="fas fa-caret-left"></i>')
     }
 }
-// $('.bookmark-form').on('submit', async function(evt) {
-//     evt.preventDefault()
-    
-//     axios.post(`/cards/${form.id}/bookmark`, {
-//         'card_id': card_id
-//     })
 
-//     $(form).empty()
-//     $(form).attr('action', `/cards/${card_id}/unbookmark`);
-//     $(form).removeClass('bookmark-form')
-//     $(form).addClass('unbookmark-form')
-//     $(form).append(`<button class="col btn btn-md btn-primary"><i class="fas fa-bookmark"></i></button>`)
-// })
+$('.delete-from-deck-btn').each(function() {
+    let btn = $(this)[0]
+    $(btn).on('click', async function(evt) {
+        evt.preventDefault()
+        let idSplit = $(btn).attr('id').split('-')
+        let deckId = idSplit[0]
+        let cardId = idSplit[1]
 
-// $('.unbookmark-form').on('submit', async function(evt) {
-//     evt.preventDefault()
-//     let form = $(this)[0]
-//     let card_id = form.id
-//     axios.post(`/cards/${form.id}/unbookmark`, {
-//         'card_id': card_id
-//     })
-
-//     $(form).empty()
-//     $(form).attr('action', `/cards/${card_id}/bookmark`);
-//     $(form).removeClass('unbookmark-form')
-//     $(form).addClass('bookmark-form')
-//     $(form).append(`<button class="col btn btn-md btn-primary"><i class="far fa-bookmark"></i></button>`)})
+        await axios.post(`/cards/${cardId}/decks/${deckId}/delete`)
+        $(`#card-${cardId}-col`).remove()
+    })
+})
