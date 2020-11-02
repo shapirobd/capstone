@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 import requests
 
-from models import db, User, Post
+from models import db, User, Post, Deck, Bookmark
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgres:///mtg_db_test'))
@@ -14,8 +14,8 @@ class PostModelTestCase(TestCase):
 
     def setUp(self):
         """Create test client, add sample data."""
-        # Deck.query.delete()
-        # Bookmark.query.delete()
+        Deck.query.delete()
+        Bookmark.query.delete()
         User.query.delete()
 
         db.create_all()

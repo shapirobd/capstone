@@ -60,12 +60,13 @@ def handle_category(category, term):
     """Executes the render_template function accordingly depending on the search category & term"""
     keyword = category
     if category == 'decks':
+        user = g.user
         decks = Deck.query.filter(
             (Deck.deck_name.ilike(f'%{term}%')) | (
                 Deck.deck_type.ilike(f'%{term}%'))).all()
         if len(decks) == 0:
             flash('No results found.', 'danger')
-        return render_template('decks.html', decks=decks)
+        return render_template('decks.html', user=user, decks=decks)
     elif category == 'friend':
         friends = [friend for friend in g.user.friends if term.casefold()
                    in friend.username.casefold()]

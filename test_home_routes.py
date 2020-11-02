@@ -85,7 +85,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn(
                 '<h5 class="card-title">Test Name</h5>', str(resp.data))
             self.assertIn(
-                '<p><b>name:</b> Test Name</p>', str(resp.data))
+                '<small>Test Name</small>', str(resp.data))
 
     def test_search_card_substring(self):
         """Test that the search route for a card gives the proper result (using substring/casefold)"""
@@ -98,8 +98,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn('<div class="collapse" id="info-1">', str(resp.data))
             self.assertIn(
                 '<h5 class="card-title">Test Name</h5>', str(resp.data))
-            self.assertIn(
-                '<p><b>name:</b> Test Name</p>', str(resp.data))
+            self.assertIn('<small>Test Name</small>', str(resp.data))
 
     def test_search_user_exact(self):
         """Test that the search route for a user gives the proper result (using exact term)"""

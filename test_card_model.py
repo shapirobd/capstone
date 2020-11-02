@@ -43,7 +43,9 @@ class CardModelTestCase(TestCase):
         print(card.name)
 
     def test_create_all_cards(self):
-        for page in range(2, 11):
+        print('TESTING')
+        for page in range(2, 4):
+            print(f'Page: {page}')
             """Test that create_all_cards method works correctly"""
             resp = requests.get('http://api.magicthegathering.io/v1/cards', {
                 'key': "$2a$10$TNyqKQQQSzVjgGXY87waZuBIKAS78.NkY2o.H004TfBU.eISv.Pt6",
@@ -51,5 +53,5 @@ class CardModelTestCase(TestCase):
             }).json()
             cards = resp['cards']
             Card.create_all_cards(cards)
-
-        self.assertEqual(len(Card.query.all()), 1000)
+            print(len(Card.query.all()))
+        self.assertEqual(len(Card.query.all()), 300)
