@@ -1,6 +1,12 @@
 {% extends "base.html" %} {% block content %}
-<div class="row" id="main-home">
-		<div class="container scroll" id="main">
+<div class="row justify-content-center" id="main-home">
+		<div class="container-fluid px-5 mx-5 scroll" id="main">
+			<div class="jumbotron text-white bg-transparent mb-0">
+				<h1 class="display-4 text-center">Welcome, {{g.user.username}}!</h1>
+				<p class="lead text-center">
+					<b>Use the search bar above to search for cards, users, friends and decks that you've made!</b>
+				</ul>
+			</div>
 			<div class="row justify-content-center">
 				{% for category, message in get_flashed_messages(with_categories=True) %}
 					<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
@@ -70,6 +76,7 @@
 								{% endif %}
 								<button
 									class="col btn btn-md btn-primary ml-1 add-to-deck-btn unselected"
+									id="add-{{card.id}}-btn"
 									type="button"
 									data-toggle="collapse"
 									data-target="#add-{{card.id}}"
@@ -91,7 +98,7 @@
 											action="/cards/{{card.id}}/decks/{{deck.id}}"
 											method="POST"
 										>
-											<button class="col btn btn-md btn-outline-primary mt-1">
+											<button class="col btn btn-md btn-outline-primary mt-1 deck-btn" id="{{card.id}}-{{deck.id}}">
 												{{deck.deck_name}}
 											</button>
 										</form>

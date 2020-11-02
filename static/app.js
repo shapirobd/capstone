@@ -109,3 +109,19 @@ $('.delete-from-friends-btn').each(function() {
         $(`#friend-${friendUsername}-col`).remove()
     })
 })
+
+$('.deck-btn').each(function() {
+    let btn = $(this)[0]
+    $(btn).on('click', async function(evt) {
+        evt.preventDefault()
+        let idSplit = $(btn).attr('id').split('-')
+        let cardId = idSplit[0]
+        let deckId = idSplit[1]
+
+        await axios.post(`/cards/${cardId}/decks/${deckId}`)
+        let dropdownMenu = $(`#add-${cardId}`)
+        dropdownMenu.removeClass('show')
+        let dropdownBtn = $(`#add-${cardId}-btn`)
+        toggleDropdownIcon(dropdownBtn)
+    })
+})

@@ -1,9 +1,12 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="container" id="main">
-	<div class="row justify-content-center">
-		<h1 class="display-3 text-white my-3">{{user.username}}'s Decks</h1>
-	</div>
+	<div class="jumbotron text-white bg-transparent mb-0">
+				<h1 class="display-4 text-center">{{g.user.username}}'s Decks</h1>
+				<p class="lead text-center">
+					<b>These are decks that {{g.user.username}} has put together from the cards in our database.</b>
+				</ul>
+			</div>
 	<div class="row justify-content-center">
 		{% for category, message in get_flashed_messages(with_categories=True) %}
 		<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
@@ -13,11 +16,13 @@
 		{% for deck in decks %}
 		<div class="row col-6 justify-content-center">
 			<div class="card text-white bg-transparent my-4" style="width: 18rem">
-				<img
-					src="/static/images/mtg_deck_img.jpg"
-					class="card-img-top mtg-card rounded-circle border border-light"
-					alt="..."
-				/>
+				<a href="/decks/{{deck.id}}">
+					<img
+						src="/static/images/mtg_deck_img.jpg"
+						class="card-img-top mtg-card rounded-circle border border-light"
+						alt="..."
+					/>
+				</a>
 				<div class="row justify-content-center">
 					<h4 class="card-title mt-2">{{deck.deck_name}}</h4>
 				</div>
@@ -26,9 +31,13 @@
 				</div>
 				<div class="row justify-content-around my-1">
 					<div class="col col-12">
+						<a href="/decks/{{deck.id}}" class="btn btn-primary col mt-2"
+							>View Deck</a
+						>
+						{% if g.user and deck.username == g.user.username %}
 						<form action="/decks/{{deck.id}}/delete" method="POST">
 							<button
-								class="btn btn-danger col mt-2"
+								class="btn btn-danger col my-1"
 								data-toggle="collapse"
 								data-target="#info-{{deck.id}}"
 								aria-expanded="false"
@@ -37,9 +46,7 @@
 								Delete
 							</button>
 						</form>
-						<a href="/decks/{{deck.id}}" class="btn btn-primary col my-1"
-							>View Deck</a
-						>
+						{% endif %}
 					</div>
 				</div>
 			</div>
