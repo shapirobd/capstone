@@ -59,7 +59,7 @@ def search():
 def handle_category(category, term):
     """Executes the render_template function accordingly depending on the search category & term"""
     keyword = category
-    if category == 'decks':
+    if category == 'deck':
         user = g.user
         decks = Deck.query.filter(
             (Deck.deck_name.ilike(f'%{term}%')) | (
@@ -72,7 +72,7 @@ def handle_category(category, term):
                    in friend.username.casefold()]
         if len(friends) == 0:
             flash('No results found.', 'danger')
-        return render_template('friends.html', friends=friends)
+        return render_template('friends.html', friends=friends, user=g.user)
     elif category == 'user':
         users = [user for user in User.query.filter(
             User.username.ilike(f'%{term}%')).all()]

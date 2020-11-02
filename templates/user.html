@@ -11,6 +11,11 @@
 				href="/users/{{user.username}}/decks"
 				>View Decks</a
 			>
+			<a
+				class="btn btn-sm btn-primary col mt-1"
+				href="/users/{{user.username}}/friends"
+				>View Friends</a
+			>
 			{% if user.username != g.user.username and user not in g.user.friends %}
 			<form
 				action=""
@@ -54,7 +59,11 @@
 					{% endfor %}
 				</form>
 			</div>
-			{% endif %} {% for post in user.posts %}
+			{% endif %} {% if user.posts|length == 0 %}
+			<h1 class="display-5 text-white text-center">
+				{{user.username}} has not made any posts yet.
+			</h1>
+			{% else %} {% endif %} {% for post in user.posts %}
 
 			<div class="jumbotron bg-dark text-white pt-3 pb-1">
 				<h1 class="display-5">{{post.title}}</h1>

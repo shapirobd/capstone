@@ -47,7 +47,7 @@ class FriendRoutesTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.user1.username
             c.post('/add_friend/username_1', follow_redirects=True)
-            resp = c.get('/friends', follow_redirects=True)
+            resp = c.get('/users/username_1/friends', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 200)
 

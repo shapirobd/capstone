@@ -18,12 +18,13 @@ friends_blueprint = Blueprint('friends_blueprint', __name__, static_folder='stat
 CURR_USER_KEY = 'curr-user'
 
 
-@friends_blueprint.route('/friends')
-def show_friends():
-    """Route for showing your your friends"""
+@friends_blueprint.route('/users/<string:username>/friends')
+def show_users_friends(username):
+    """Route for showing your friends"""
     if g.user:
-        friends = g.user.friends
-        return render_template('friends.html', friends=friends)
+        user = User.query.get(username)
+        friends = user.friends
+        return render_template('friends.html', friends=friends, user=user)
     return redirect('/login')
 
 
@@ -34,7 +35,7 @@ def add_friend(friend_username):
         friend = User.query.get(friend_username)
         g.user.friends.append(friend)
         db.session.commit()
-        return redirect('/friends')
+        return redirect(f'/users/{g.user.username}/friends')
     return redirect('/login')
 
 
@@ -45,5 +46,5 @@ def remove_friend(friend_username):
         friend = User.query.get(friend_username)
         g.user.friends.remove(friend)
         db.session.commit()
-        return redirect('/friends')
+        return redirect(f'/users/{g.user.username}/friends')
     return redirect('/login')

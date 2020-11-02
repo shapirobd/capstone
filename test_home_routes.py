@@ -153,8 +153,7 @@ class HomeRoutesTestCase(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = 'username_1'
-            resp = c.get('/home/search?category=decks&term=Test+Deck')
-
+            resp = c.get('/home/search?category=deck&term=Test+Deck')
             self.assertEqual(resp.status_code, 200)
             self.assertIn('View Deck', str(resp.data))
             self.assertIn(
@@ -165,7 +164,7 @@ class HomeRoutesTestCase(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = 'username_1'
-            resp = c.get('/home/search?category=decks&term=tEsT+D')
+            resp = c.get('/home/search?category=deck&term=tEsT+D')
 
             self.assertEqual(resp.status_code, 200)
             self.assertIn('View Deck', str(resp.data))

@@ -5,7 +5,7 @@
 				<h1 class="display-4 text-center">Welcome, {{g.user.username}}!</h1>
 				<p class="lead text-center">
 					<b>Use the search bar above to search for cards, users, friends and decks that you've made!</b>
-				</ul>
+				</p>
 			</div>
 			<div class="row justify-content-center">
 				{% for category, message in get_flashed_messages(with_categories=True) %}
