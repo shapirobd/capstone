@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="container" id="main">
+	{% if search == False %}
 	<div class="jumbotron text-white bg-transparent mb-0">
 		<h1 class="display-4 text-center">{{g.user.username}}'s Decks</h1>
 		<p class="lead text-center">
@@ -10,6 +11,8 @@
 			>
 		</p>
 	</div>
+	{% endif %}
+
 	<div class="row justify-content-center">
 		{% for category, message in get_flashed_messages(with_categories=True) %}
 		<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
@@ -33,6 +36,13 @@
 					<div class="row justify-content-center">
 						<h6 class="">{{deck.deck_type}}</h6>
 					</div>
+					{% if search == True %}
+					<div class="row justify-content-center">
+						<h6 class="">
+							Owner: <a href="/users/{{deck.username}}">{{deck.username}}</a>
+						</h6>
+					</div>
+					{% endif %}
 					<div class="row justify-content-around my-1">
 						<div class="col col-12">
 							<a href="/decks/{{deck.id}}" class="btn btn-primary col mt-2"

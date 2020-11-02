@@ -11,12 +11,12 @@
 		<div class="col-3 text-white">
 			<img
 				src="{{user.image_url}}"
-				class="img-thumbnail mb-2"
+				class="img-thumbnail mb-2 user-thumbnail"
 				alt=""
-				style="height: 200px"
+				style="width: 100%"
 			/>
-			<h3>{{user.username}}</h3>
-			<h5>Decks: {{user.decks | length}}</h5>
+			<h3 class="text-center">{{user.username}}</h3>
+			<h5 class="text-center">Decks: {{user.decks | length}}</h5>
 			<a class="btn btn-sm btn-primary col my-1" href="/users/{{user.username}}"
 				>View Profile</a
 			>

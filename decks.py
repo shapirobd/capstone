@@ -24,7 +24,8 @@ def view_decks():
     if g.user:
         user = g.user
         decks = g.user.decks
-        return render_template('decks.html', decks=decks, user=user)
+        search = False
+        return render_template('decks.html', decks=decks, user=user, search=search)
     return redirect('/login')
 
 
@@ -109,4 +110,5 @@ def show_users_decks(username):
     """Route for viewing someone else's decks"""
     user = User.query.get(username)
     decks = user.decks
-    return render_template('decks.html', decks=decks, user=user)
+    search = False
+    return render_template('decks.html', decks=decks, user=user, search=search)
