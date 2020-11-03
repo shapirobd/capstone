@@ -83,7 +83,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn('Add to Deck', str(resp.data))
             self.assertIn('<div class="collapse" id="info-1">', str(resp.data))
             self.assertIn(
-                '<h5 class="card-title">Test Name</h5>', str(resp.data))
+                '<h5 class="card-title text-center">Test Name</h5>', str(resp.data))
             self.assertIn(
                 '<small>Test Name</small>', str(resp.data))
 
@@ -97,7 +97,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn('Add to Deck', str(resp.data))
             self.assertIn('<div class="collapse" id="info-1">', str(resp.data))
             self.assertIn(
-                '<h5 class="card-title">Test Name</h5>', str(resp.data))
+                '<h5 class="card-title text-center">Test Name</h5>', str(resp.data))
             self.assertIn('<small>Test Name</small>', str(resp.data))
 
     def test_search_user_exact(self):
@@ -109,7 +109,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn('View Profile', str(resp.data))
             self.assertIn('View Decks', str(resp.data))
             self.assertIn(
-                '<h3>username_1</h3>', str(resp.data))
+                '<h3 class="text-center">username_1</h3>', str(resp.data))
 
     def test_search_user_substring(self):
         """Test that the search route for a user gives the proper result (using substring/casefold)"""
@@ -120,7 +120,7 @@ class HomeRoutesTestCase(TestCase):
             self.assertIn('View Profile', str(resp.data))
             self.assertIn('View Decks', str(resp.data))
             self.assertIn(
-                '<h3>username_1</h3>', str(resp.data))
+                '<h3 class="text-center">username_1</h3>', str(resp.data))
 
     def test_search_friend_exact(self):
         """Test that the search route for a friend gives the proper result (using exact term)"""
