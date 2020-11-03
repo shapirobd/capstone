@@ -59,19 +59,3 @@ ul {
 .btn:focus {
 	box-shadow: none;
 }
-
-/* input[type="checkbox"] {
-	display: none;
-}
-
-input[type="checkbox"] + label {
-	background: url("images/checkbox-off.png") no-repeat;
-	width: 20px;
-	height: 20px;
-}
-
-input[type="checkbox"]:checked + label {
-	background: url("images/checkbox-on.png");
-	width: 20px;
-	height: 20px;
-} */
