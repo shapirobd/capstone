@@ -28,9 +28,9 @@ Notes on MTG API:
 - Requests for cards can take a very long time - if you want to retrieve every single card from the API, it can take around 2 hours. Also, the Python SDK suddenly stopped working one day, so there seems to be some issues that need fixing.
 
 Technology stack used:
-astroid==2.4.2
-autopep8==1.5.4
-bcrypt==3.2.0
+- astroid==2.4.2
+- autopep8==1.5.4
+- bcrypt==3.2.0
 blinker==1.4
 certifi==2020.6.20
 cffi==1.14.3
