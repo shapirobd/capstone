@@ -4,14 +4,6 @@ from app import db
 from models import connect_db, Card, User, Friendship, Deck, Bookmark, Post, CardDeck
 
 print('STARTING SEED...')
-
-Post.query.delete()
-Bookmark.query.delete()
-CardDeck.query.delete()
-Deck.query.delete()
-Friendship.query.delete()
-User.query.delete()
-
 db.drop_all()
 db.create_all()
 
