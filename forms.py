@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, RadioField, SelectField, FileField, TextAreaField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, Email
 from wtforms.widgets import CheckboxInput, ListWidget
+import email_validator
 
 
 class LoginForm(FlaskForm):
@@ -11,7 +12,8 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired()])
+    email = StringField('Email', validators=[
+                        InputRequired(), Email("Invalid email address")])
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[
                              InputRequired(), Length(min=8)])
@@ -21,7 +23,8 @@ class RegisterForm(FlaskForm):
 
 
 class EditUserForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired()])
+    email = StringField('Email', validators=[
+                        InputRequired(), Email("Invalid email address")])
     password = PasswordField("Password", validators=[
                              InputRequired(), Length(min=8)])
     confirmed_password = PasswordField(
