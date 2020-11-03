@@ -25,6 +25,7 @@
 					><img style="height: 35px" src="/static/images/mtg_logo.png"
 				/></a>
 			</div>
+			{% if g.user %}
 			<button
 				class="navbar-toggler"
 				type="button"
@@ -137,6 +138,7 @@
 					>
 				</div>
 			</div>
+			{% endif %}
 		</nav>
 		<div class="container" id="background-image"></div>
 		{% block content %} {% endblock %}
