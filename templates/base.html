@@ -20,15 +20,55 @@
 
 	<body class="{% block body_class %}{% endblock %}">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand mx-0" href="/"
-				><img style="height: 35px" src="/static/images/mtg_logo.png"
-			/></a>
-			<div class="col">
+			<div class="mr-3">
+				<a class="mx-0 pl-3" href="/"
+					><img style="height: 35px" src="/static/images/mtg_logo.png"
+				/></a>
+			</div>
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link text-light px-3" href="/home"
+							>Home <span class="sr-only">(current)</span></a
+						>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-light px-3" href="/bookmarks">Bookmarks</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-light px-3" href="/decks">Decks</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-light px-3" href="/new"
+							><i class="fas fa-plus"></i
+						></a>
+					</li>
+					<li class="nav-item">
+						<a
+							class="nav-link text-light px-3"
+							href="/users/{{g.user.username}}/friends"
+						>
+							<i class="fas fa-user-friends"></i>
+						</a>
+					</li>
+				</ul>
 				<form
-					class="form-inline my-2 my-lg-0 col-11 px-0"
+					class="form-inline my-2 mx-0 my-lg-0 col-5 px-0"
 					action="/home/search"
 				>
-					<div class="input-group col">
+					<div class="nav-item input-group col">
 						<input
 							type="text"
 							class="form-control input-group-append col-7"
@@ -60,87 +100,41 @@
 						</div>
 					</div>
 				</form>
-			</div>
-			<div class="col-sm-1 col-lg-4 col-xl-5 justify-content-end">
-				<button
-					class="navbar-toggler"
-					type="button"
-					data-toggle="collapse"
-					data-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					{% if g.user %}
-					<div class="nav-item align-items-baseline">
-						<a class="nav-link" href="/users/{{g.user.username}}">
-							<img
-								class="rounded-circle nav-img"
-								src="{{g.user.image_url}}"
-								alt=""
-							/>
-						</a>
-					</div>
-					<div class="nav-item active">
-						<a class="nav-link text-light" href="/home"
-							>Home <span class="sr-only">(current)</span></a
+				<div class="nav-item dropdown">
+					<a
+						class="nav-link text-secondary dropdown-toggle px-3"
+						href="#"
+						id="navbarDropdown"
+						role="button"
+						data-toggle="dropdown"
+						aria-haspopup="true"
+						aria-expanded="false"
+					>
+						<i class="fas fa-cog"></i>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item px-3" href="/users/{{g.user.username}}/edit"
+							>Edit Profile</a
 						>
 					</div>
-					<div class="nav-item">
-						<a class="nav-link text-light" href="/bookmarks">Bookmarks</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-light" href="/decks">Decks</a>
-					</div>
-					<div class="nav-item">
-						<a class="nav-link text-light" href="/new"
-							><i class="fas fa-plus"></i
-						></a>
-					</div>
-
-					<div class="nav-item align-items-baseline">
-						<a
-							class="nav-link text-light"
-							href="/users/{{g.user.username}}/friends"
-						>
-							<i class="fas fa-user-friends"></i>
-						</a>
-					</div>
-
-					<div class="nav-item align-items-baseline">
-						<a
-							class="nav-link text-secondary dropdown-toggle"
-							href="#"
-							id="navbarDropdown"
-							role="button"
-							data-toggle="dropdown"
-							aria-haspopup="true"
-							aria-expanded="false"
-						>
-							<i class="fas fa-cog"></i>
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="/users/{{g.user.username}}/edit"
-								>Edit Profile</a
-							>
-						</div>
-					</div>
-
-					<div class="align-items-baseline">
-						<a
-							class="nav-link text-danger"
-							href="/logout"
-							tabindex="-1"
-							aria-disabled="true"
-							>Logout</a
-						>
-					</div>
-
-					{% else %} {% endif %}
+				</div>
+				<div class="nav-item active">
+					<a class="nav-link px-3" href="/users/{{g.user.username}}">
+						<img
+							class="rounded-circle nav-img"
+							src="{{g.user.image_url}}"
+							alt=""
+						/>
+					</a>
+				</div>
+				<div class="nav-item active">
+					<a
+						class="nav-link text-danger px-3"
+						href="/logout"
+						tabindex="-1"
+						aria-disabled="true"
+						>Logout</a
+					>
 				</div>
 			</div>
 		</nav>
