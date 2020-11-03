@@ -1,5 +1,6 @@
 body {
 	height: 100vh;
+	width: 100vw;
 	background-color: black;
 }
 
@@ -36,6 +37,7 @@ ul {
 
 #main-home {
 	height: 87vh;
+	width: 100vw;
 }
 
 .nav-img {

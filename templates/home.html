@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}MTG Deck Builder{% endblock %} {%
 block content %}
-<div class="row justify-content-center" id="main-home">
+<div class="row justify-content-center mx-0" id="main-home">
 		<div class="container-fluid px-5 mx-5 scroll" id="main">
 			<div class="jumbotron text-white bg-transparent mb-0">
 				<h1 class="display-4 text-center">Welcome, {{g.user.username}}!</h1>
@@ -13,12 +13,12 @@ block content %}
 					<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
 				{% endfor %}
 			</div>
-			<div id="cards" class="row">
+			<div id="cards" class="row justify-content-center">
 				{% for card in cards %}
-				<div class="col-sm-6 col-lg-4 col-xl-3">
+				<div class="col-sm-6 col-lg-4 col-xl-3 container-fluid">
 					<div
 						class="card text-white bg-transparent my-4 mx-3"
-						style="width: 15rem"
+						
 					>
 						<img
 							src="{{card.image_url}}"
@@ -39,10 +39,11 @@ block content %}
 						<div class="collapse" id="info-{{card.id}}">
 							<div class="card-body px-0">
 								<div class="row justify-content-center align-items-center">
-									<h5 class="card-title">{{card.name}}</h5>
+									<h5 class="card-title text-center">{{card.name}}</h5>
 								</div>
-								<table class="table ml-0 mb-0 text-light">
-									<tbody>
+								<div class="row justify-content-center">
+									<table class="table ml-0 mb-0 text-light">
+										<tbody>
 										{% for attr, value in card.__dict__.items() %} 
 											{% if attr !='image_url' and attr != 'text' and attr != 'id' and attr != '_sa_instance_state' and value and value != '' %}
 												<tr>
@@ -55,9 +56,9 @@ block content %}
 												</tr>
 											{% endif %}
 										{% endfor %}
-									</tbody>
-								
-								</table>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 						<div class="col">
