@@ -118,7 +118,7 @@ block content %}
 				</div>
 				{% endfor %}
 			</div>
-			{% if last_page == 1 %}
+			{% if last_page == 1 or last_page == 0 %}
 			{% elif last_page == 2 %}
 			<nav aria-label="Page navigation example">
 				<ul class="pagination justify-content-center">
