@@ -1,4 +1,4 @@
-# capstone
+# Capstone Project - MTG Deck Builder
 
 Link to proposal:
 
