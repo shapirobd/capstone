@@ -1,0 +1,264 @@
+{% extends "base.html" %} {% block title %}MTG Deck Builder{% endblock %} {%
+block content %}
+<div class="row justify-content-center mx-0" class="main-home">
+		<div class="container-fluid px-5 mx-5 scroll">
+			<div class="jumbotron text-white bg-transparent mb-0">
+				<h1 class="display-4 text-center">Welcome, {{g.user.username}}!</h1>
+				<p class="lead text-center">
+					<b>Use the search bar above to search for cards, users, friends and decks that you've made!</b>
+				</p>
+			</div>
+			<div class="row justify-content-center">
+				{% for category, message in get_flashed_messages(with_categories=True) %}
+					<p class="alert alert-{{category}} text-right my-5">{{ message }}</p>
+				{% endfor %}
+			</div>
+			<div id="cards" class="row justify-content-center">
+				{% for card in cards %}
+				<div class="col-sm-6 col-lg-4 col-xl-3 container-fluid">
+					<div
+						class="card text-white bg-transparent my-4 mx-3"
+						
+					>
+						<img
+							src="{{card.image_url}}"
+							class="card-img-top mtg-card"
+							alt="..."
+						/>
+						<button
+							class="btn btn-md btn-secondary my-1 show-info-btn unselected"
+							type="button"
+							data-toggle="collapse"
+							data-target="#info-{{card.id}}"
+							aria-expanded="false"
+							aria-controls="collapseExample"
+						>
+							Show Info
+							<i class="show-info-unselected fas fa-caret-left"></i>
+						</button>
+						<div class="collapse" id="info-{{card.id}}">
+							<div class="card-body px-0">
+								<div class="row justify-content-center align-items-center">
+									<h5 class="card-title text-center">{{card.name}}</h5>
+								</div>
+								<div class="row justify-content-center">
+									<table class="table ml-0 mb-0 text-light">
+										<tbody>
+										{% for attr, value in card.__dict__.items() %} 
+											{% if attr !='image_url' and attr != 'text' and attr != 'id' and attr != '_sa_instance_state' and value and value != '' %}
+												<tr>
+													<th scope="row" class="pb-0">
+														<p><b>{{attr.upper().replace('_', ' ')}}</b></p>
+													</th>
+													<td class="text-small pb-3">
+														<small>{{value}}</small>
+													</td>
+												</tr>
+											{% endif %}
+										{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="row">
+								{% if card.id in bookmarked_card_ids %}
+								<form action="/cards/{{card.id}}/unbookmark" method="POST" id="{{card.id}}" class="unbookmark-form bookmark-btn-form">
+									<button class="col btn btn-md btn-primary rounded-circle">
+										<i class="fas fa-bookmark"></i>
+									</button>
+								</form>
+								{% else %}
+								<form action="/cards/{{card.id}}/bookmark" method="POST" id="{{card.id}}" class="bookmark-form bookmark-btn-form">
+									<button class="col btn btn-md btn-primary rounded-circle">
+										<i class="far fa-bookmark"></i>
+									</button>
+								</form>
+								{% endif %}
+								<button
+									class="col btn btn-md btn-primary ml-1 add-to-deck-btn unselected"
+									id="add-{{card.id}}-btn"
+									type="button"
+									data-toggle="collapse"
+									data-target="#add-{{card.id}}"
+									aria-expanded="false"
+									aria-controls="collapseExample"
+								>
+									Add to Deck
+									<i class="add-to-deck-unselected fas fa-caret-left"></i>
+								</button>
+							</div>
+						</div>
+						<div class="">
+							<div class="row justify-content-center">
+								<div class="collapse col" id="add-{{card.id}}">
+									<div>
+										
+										{% for deck in decks %}
+										<form
+											action="/cards/{{card.id}}/decks/{{deck.id}}"
+											method="POST"
+										>
+											<button class="col btn btn-md btn-outline-primary mt-1 deck-btn" id="{{card.id}}-{{deck.id}}">
+												{{deck.deck_name}}
+											</button>
+										</form>
+										{% endfor %} 
+										<a
+											class="col btn btn-md btn-outline-light mt-1"
+											href="/new?card-to-add={{card.id}}"
+											>Create Deck <i class="fas fa-plus"></i
+										></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% if last_page == 1 or last_page == 0 %}
+			{% elif last_page == 2 %}
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					{% if page == 1 %}
+					<li class="page-item disabled">
+						<a class="page-link" href="" tabindex="-1" aria-disabled="true"
+							>First</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page}}"
+							><b>{{page}}</b></a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page + 1}}"
+							>{{page + 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{last_page}}">Last</a>
+					</li>
+					{% elif page == last_page %}
+					<li class="page-item">
+						<a
+							class="page-link"
+							href="{{base_url}}page=1"
+							tabindex="-1"
+							aria-disabled="true"
+							>First</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page - 1}}"
+							>{{page - 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page}}"
+							><b>{{page}}</b></a
+						>
+					</li>
+					<li class="page-item disabled">
+						<a class="page-link" href="" tabindex="-1" aria-disabled="true"
+							>Last</a
+						>
+					</li>
+					{% endif %}
+				</ul>
+			</nav>
+			{% else %}
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center">
+					{% if page == 1 %}
+					<li class="page-item disabled">
+						<a class="page-link" href="" tabindex="-1" aria-disabled="true"
+							>First</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page}}"
+							><b>{{page}}</b></a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page + 1}}"
+							>{{page + 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page + 2}}"
+							>{{page + 2}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{last_page}}">Last</a>
+					</li>
+					{% elif page == last_page %}
+					<li class="page-item">
+						<a
+							class="page-link"
+							href="{{base_url}}page=1"
+							tabindex="-1"
+							aria-disabled="true"
+							>First</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page - 2}}"
+							>{{page - 2}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page - 1}}"
+							>{{page - 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page}}"
+							><b>{{page}}</b></a
+						>
+					</li>
+					<li class="page-item disabled">
+						<a class="page-link" href="" tabindex="-1" aria-disabled="true"
+							>Last</a
+						>
+					</li>
+					{% else %}
+					<li class="page-item">
+						<a
+							class="page-link"
+							href="{{base_url}}page=1"
+							tabindex="-1"
+							aria-disabled="true"
+							>First</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page - 1}}"
+							>{{page - 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page}}"
+							><b>{{page}}</b></a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{page + 1}}"
+							>{{page + 1}}</a
+						>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="{{base_url}}page={{last_page}}">Last</a>
+					</li>
+					{% endif %}
+				</ul>
+			</nav>
+			{% endif %}
+		</div>
+	</div>
+	{% endblock %}
+</div>

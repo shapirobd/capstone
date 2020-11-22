@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block title %}{{user.username}}{% endblock %} {%
+block content %}
+
+<div class="container my-5">
+	<div class="row justify-content-center">
+		<div class="col-2 text-white">
+			<img src="{{user.image_url}}" class="img-thumbnail mb-2" alt="" />
+			<h3>{{user.username}}</h3>
+			<h5>Decks: {{user.decks | length}}</h5>
+			<a
+				class="btn btn-sm btn-primary col mt-3"
+				href="/users/{{user.username}}/decks"
+				>View Decks</a
+			>
+			<a
+				class="btn btn-sm btn-primary col mt-1"
+				href="/users/{{user.username}}/friends"
+				>View Friends</a
+			>
+			{% if user.username != g.user.username and user not in g.user.friends %}
+			<form
+				action=""
+				method="POST"
+				class="add-friend-form friend-btn-form"
+				id="{{user.username}}"
+			>
+				<button class="btn btn-sm btn-primary col my-1">Add Friend</button>
+			</form>
+			{% elif user in g.user.friends %}
+			<form
+				action=""
+				method="POST"
+				class="remove-friend-form friend-btn-form"
+				id="{{user.username}}"
+			>
+				<button class="btn btn-sm btn-danger col my-1">Remove Friend</button>
+			</form>
+			{% endif %}
+		</div>
+		<div class="col-8">
+			{% if g.user.username == user.username %}
+			<div class="jumbotron bg-transparent pb-2 pt-3">
+				<h1 class="display-5 text-light text-center">Create Post</h1>
+				<form method="POST" action="" class="my-3">
+					{{form.hidden_tag()}} {% for field in form if field.widget.input_type
+					!= 'hidden' %}
+					<p>
+						{{field.label(class_='text-light')}}
+						{{field(class_="form-control")}} {% for error in field.errors %}
+						<span class="form-text text-danger">{{error}}</span>
+						{% endfor %}
+					</p>
+					{% endfor %}
+					<div class="row justify-content-center">
+						<button class="btn btn-success" type="submit">Post</button>
+					</div>
+					{% for category, message in get_flashed_messages(with_categories=True)
+					%}
+					<p class="text-{{category}} text-right">{{ message }}</p>
+					{% endfor %}
+				</form>
+			</div>
+			{% endif %} {% if user.posts|length == 0 %}
+			<h1 class="display-5 text-white text-center">
+				{{user.username}} has not made any posts yet.
+			</h1>
+			{% else %} {% endif %} {% for post in user.posts %}
+
+			<div class="jumbotron bg-dark text-white pt-3 pb-1">
+				<h1 class="display-5">{{post.title}}</h1>
+				<p class="lead">{{post.username}}</p>
+				<hr class="my-2" />
+				<p>{{post.content}}</p>
+				<p class="text-secondary font-light">
+					<i><small> {{post.date_time}}</small></i>
+				</p>
+			</div>
+
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}
