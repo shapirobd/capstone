@@ -21,10 +21,7 @@ MTG Deck Builder allows users to search for cards in the MTG library, see info o
 5. Add cards to decks
 6. You may also search for other decks for inspiration
 
-## Notes on MTG API
-- Requests for cards can take a very long time - if you want to retrieve every single card from the API, it can take around 2 hours. Also, the Python SDK suddenly stopped working one day, so there seems to be some issues that need fixing.
-
-Technology Stack
+## Technology Stack
 ```
 astroid==2.4.2
 autopep8==1.5.4
