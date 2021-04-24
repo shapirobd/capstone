@@ -1,12 +1,9 @@
 # Capstone Project - MTG Deck Builder
 
-Link to proposal:
-
-https://docs.google.com/document/d/1vihomjFiPxAEcT1a_XN5z64aQJ3TPLc6ZatwUhQOaoU/edit?usp=sharing
-
-
-Title of my site: MTG Deck Builder   
 Link to site [here](https://mtg-deck-builder-herokuapp.herokuapp.com/)
+
+Link to proposal:
+https://docs.google.com/document/d/1vihomjFiPxAEcT1a_XN5z64aQJ3TPLc6ZatwUhQOaoU/edit?usp=sharing
 
 MTG Deck Builder allows users to search for cards in the MTG library, see info on the cards, create their own decks, create posts, add friends, and view decks that other users have made.
 
@@ -28,42 +25,42 @@ Notes on MTG API:
 - Requests for cards can take a very long time - if you want to retrieve every single card from the API, it can take around 2 hours. Also, the Python SDK suddenly stopped working one day, so there seems to be some issues that need fixing.
 
 Technology stack used:
-- astroid==2.4.2
-- autopep8==1.5.4
-- bcrypt==3.2.0
-- blinker==1.4
-- certifi==2020.6.20
-- cffi==1.14.3
-- chardet==3.0.4
-- click==7.1.2
-- dnspython==2.0.0
-- email-validator==1.1.1
-- Flask==1.1.2
-- Flask-Bcrypt==0.7.1
-- Flask-DebugToolbar==0.11.0
-- flask-paginate==0.7.1
-- Flask-SQLAlchemy==2.4.4
-- Flask-WTF==0.14.3
-- idna==2.10
-- isort==5.6.4
-- itsdangerous==1.1.0
-- Jinja2==2.11.2
-- lazy-object-proxy==1.4.3
-- MarkupSafe==1.1.1
-- mccabe==0.6.1
-- mtgsdk==1.3.1
-- psycopg2-binary==2.8.6
-- pycodestyle==2.6.0
-- pycparser==2.20
-- pylint==2.6.0
-- requests==2.24.0
-- six==1.15.0
-- SQLAlchemy==1.3.20
-- toml==0.10.1
-- typed-ast==1.4.1
-- urllib3==1.25.11
-- Werkzeug==1.0.1
-- wrapt==1.12.1
-- WTForms==2.3.3
-
-There are still a lot of features that I want to add, but I need to move on with the curriculum so I am submitting my project with the features it currently has and will add more features as stretch goals.
+```
+astroid==2.4.2
+autopep8==1.5.4
+bcrypt==3.2.0
+blinker==1.4
+certifi==2020.6.20
+cffi==1.14.3
+chardet==3.0.4
+click==7.1.2
+dnspython==2.0.0
+email-validator==1.1.1
+Flask==1.1.2
+Flask-Bcrypt==0.7.1
+Flask-DebugToolbar==0.11.0
+flask-paginate==0.7.1
+Flask-SQLAlchemy==2.4.4
+Flask-WTF==0.14.3
+idna==2.10
+isort==5.6.4
+itsdangerous==1.1.0
+Jinja2==2.11.2
+lazy-object-proxy==1.4.3
+MarkupSafe==1.1.1
+mccabe==0.6.1
+mtgsdk==1.3.1
+psycopg2-binary==2.8.6
+pycodestyle==2.6.0
+pycparser==2.20
+pylint==2.6.0
+requests==2.24.0
+six==1.15.0
+SQLAlchemy==1.3.20
+toml==0.10.1
+typed-ast==1.4.1
+urllib3==1.25.11
+Werkzeug==1.0.1
+wrapt==1.12.1
+WTForms==2.3.3
+```
