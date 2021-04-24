@@ -5,8 +5,8 @@ Link to proposal:
 https://docs.google.com/document/d/1vihomjFiPxAEcT1a_XN5z64aQJ3TPLc6ZatwUhQOaoU/edit?usp=sharing
 
 
-Title of my site: MTG Deck Builder
-Link to the URL where it is deployed: https://mtg-deck-builder-herokuapp.herokuapp.com/
+Title of my site: MTG Deck Builder   
+Link to site [here](https://mtg-deck-builder-herokuapp.herokuapp.com/)
 
 MTG Deck Builder allows users to search for cards in the MTG library, see info on the cards, create their own decks, create posts, add friends, and view decks that other users have made.
 
