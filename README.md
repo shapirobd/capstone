@@ -1,6 +1,7 @@
 # Capstone Project - MTG Deck Builder
 
 Link to site [here](https://mtg-deck-builder-herokuapp.herokuapp.com/)   
+Link to MTG API documentation [here](https://docs.magicthegathering.io/#documentationgetting_started)
 Link to proposal [here](https://docs.google.com/document/d/1vihomjFiPxAEcT1a_XN5z64aQJ3TPLc6ZatwUhQOaoU/edit?usp=sharing
 )
 
